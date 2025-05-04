@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'main',
+    'accounts',
+    # 'content',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,15 +70,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'besmart.wsgi.application'
-
+TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates']
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'besmart_db',
+        'USER': 'root',
+        'PASSWORD': '0000',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
@@ -115,6 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
