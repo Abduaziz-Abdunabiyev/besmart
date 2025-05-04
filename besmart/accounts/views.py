@@ -48,9 +48,26 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('/')  # Redirect to homepage or dashboard
+            return redirect('profile_view')  # Redirect to homepage or dashboard
         else:
             messages.error(request, "Invalid username or password.")
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/auth.html')
+
+
+from .forms import ProfileForm
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def profile_view(request):
+    profile = request.user.profile
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated.")
+            return redirect('profile_view')
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'accounts/profile.html', {'form': form, 'profile': profile})
