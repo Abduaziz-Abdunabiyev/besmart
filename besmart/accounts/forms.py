@@ -4,8 +4,8 @@ from .models import Profile
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['age', 'bio', 'interests', 'avatar']
+        fields = ['bio', 'location', 'interests', 'skills', 'social_links', 'profile_picture', 'achievements', 'notification_preferences']
         widgets = {
-            'bio': forms.Textarea(attrs={'rows': 3}),
-            'interests': forms.Textarea(attrs={'rows': 2}),
+            'achievements': forms.Textarea(attrs={'placeholder': 'Add achievements like awards or badges'}),
+            'social_links': forms.Textarea(attrs={'placeholder': 'Add links to your social profiles (JSON format)'}),
         }

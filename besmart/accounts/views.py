@@ -36,8 +36,8 @@ def signup_view(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Signup successful. Please log in.")
-            return redirect('login')
+            messages.success(request, "Signup successful.")
+            return redirect('profile_view')
     else:
         form = SignUpForm()
     return render(request, 'accounts/auth.html')
@@ -48,7 +48,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('profile_view')  # Redirect to homepage or dashboard
+            return redirect('update_profile')  # Redirect to homepage or dashboard
         else:
             messages.error(request, "Invalid username or password.")
     else:
@@ -71,3 +71,18 @@ def profile_view(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'accounts/profile.html', {'form': form, 'profile': profile})
+
+
+@login_required
+def update_profile(request):
+    profile = request.user.profile
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect('update_profile')  # Redirect to the profile page after updating
+    else:
+        form = ProfileForm(instance=profile)
+    
+    return render(request, 'accounts/update_profile.html', {'form': form})
