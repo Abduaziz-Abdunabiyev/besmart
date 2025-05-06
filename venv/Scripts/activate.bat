@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=D:\Python Django\BeSmart\venv
+set VIRTUAL_ENV=C:\Users\NASIBA\Desktop\Django_University\django_project\besmart\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
