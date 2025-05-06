@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,31 +22,33 @@
     }
 
     .auth-container {
-      background: rgba(255, 255, 255, 0.9);
+      background: linear-gradient(135deg, #F8F8F8, #E8DEF8);
       border-radius: 16px;
-      padding: 2rem;
+      padding: 50px 50px;
       box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
+      
     }
 
     .tabs {
       display: flex;
-      margin-bottom: 1.5rem;
+      margin-bottom: 40px;
     }
 
     .tab {
       flex: 1;
       text-align: center;
+      color: #828282;
       padding: 0.75rem;
       cursor: pointer;
       font-weight: 600;
+      font-size: 26px;
+      line-height: 19.2px;
       border-bottom: 2px solid transparent;
     }
 
     .tab.active {
-      border-color: #007BFF;
-      color: #007BFF;
+      border-color: #333333;
+      color: #333333;
     }
 
     .form {
@@ -58,26 +61,44 @@
     }
 
     .form input {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      color: #333333;
       padding: 0.75rem;
       margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 50px;
       font-size: 1rem;
     }
 
     .form button {
       padding: 0.75rem;
-      background: #007BFF;
-      color: white;
+      background: #FFD54F;
+      color: #333333;
       border: none;
-      border-radius: 8px;
+      border-radius: 50px;
       font-size: 1rem;
       cursor: pointer;
       transition: background 0.3s;
     }
 
+    .input_lebal {
+      font-size: 16px;
+      line-height: 16px;
+      color: #828282;
+      margin-bottom: 16px;
+
+    }
+
     .form button:hover {
-      background: #0056b3;
+      background: #FFC107;
+    }
+
+    .signup_title {
+      color: #333333;
+      font-size: 24px;
+      line-height: 40px;
+      text-align: center;
+      margin-bottom: 32px;
     }
 
     .footer {
@@ -85,6 +106,31 @@
       text-align: center;
       font-size: 0.9rem;
       color: #666;
+    }
+
+    .wrap {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .social_wrapper {
+      display: flex;
+      align-items:center;
+      gap: 4px;
+      color: #666;
+      font-size: 0.9rem;
+      border: 1px solid #828282;
+      border-radius: 50px;
+      padding: 4px 14px;
+      margin: 8px 0;
+      cursor: pointer;
+    }
+
+    .social_login {
+      border: none;
+      cursor: pointer;
+
     }
   </style>
 </head>
@@ -98,22 +144,43 @@
     <!-- Login Form -->
     <form class="form active" id="loginForm" method="POST" action="{% url 'login' %}">
       {% csrf_token %}
+      <label for="username" class="input_lebal">Username</label>
       <input type="text" name="username" placeholder="Username" required />
+      <label for="password" class="input_lebal">Password</label>
       <input type="password" name="password" placeholder="Password" required />
       <button type="submit">Login</button>
     </form>
 
     <!-- Sign Up Form -->
+    
     <form class="form" id="signupForm" method="POST" action="{% url 'signup' %}">
+      <p class="signup_title">Create an account</p>
       {% csrf_token %}
+      <label for="username" class="input_lebal">Full name</label>
       <input type="text" name="username" placeholder="Username" required />
+      <label for="email" class="input_lebal">Email</label>
       <input type="email" name="email" placeholder="Email" required />
+      <label for="password1" class="input_lebal">Password</label>
       <input type="password" name="password1" placeholder="Password" required />
+      <label for="password2" class="input_lebal">Confirm Password</label>
       <input type="password" name="password2" placeholder="Confirm Password" required />
       <button type="submit">Sign Up</button>
     </form>
 
     <div class="footer">
+      <p>or with</p>
+      <div class="wrap">
+        <div class="social_wrapper">
+          <img src="{% static 'accounts/css/images/4691384_apple_icon.png' %}" width="15" alt="Apple">
+          <button class="social_login">Apple</button>
+        </div>
+        <div class="social_wrapper">
+          <img src="{% static 'accounts/css/images/7123953_logo_google_g_icon.png' %}" width="15" alt="Google">
+          <button class="social_login">Google</button>
+        </div>
+        
+      </div>
+      
       © 2025 BeSmart | Learn. Share. Grow.
     </div>
   </div>
