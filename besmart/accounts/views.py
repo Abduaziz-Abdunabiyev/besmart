@@ -37,7 +37,7 @@ def signup_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Signup successful.")
-            return redirect('profile_view')
+            return redirect('update_profile')
     else:
         form = SignUpForm()
     return render(request, 'accounts/auth.html')
