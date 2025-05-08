@@ -1,0 +1,55 @@
+.feed-container {
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.post {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.uploaded-media {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 0.95em;
+    margin-top: 5px;
+}
+
+.upload-time {
+    font-size: 0.8em;
+    color: gray;
+}
