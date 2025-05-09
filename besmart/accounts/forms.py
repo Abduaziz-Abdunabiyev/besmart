@@ -1,17 +1,25 @@
 from django import forms
-from .models import Profile
+from .models import Profile, Content
 
 class ProfileForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=100, required=False)
+    last_name = forms.CharField(max_length=100, required=False)
+
     class Meta:
         model = Profile
-        fields = ['bio', 'location', 'interests', 'skills', 'social_links', 'profile_picture', 'achievements', 'notification_preferences']
-        widgets = {
-            'achievements': forms.Textarea(attrs={'placeholder': 'Add achievements like awards or badges'}),
-            'social_links': forms.Textarea(attrs={'placeholder': 'Add links to your social profiles (JSON format)'}),
-        }
+        fields = ['first_name', 'last_name', 'bio', 'avatar', 'age', 'interests', 'contact_preferences', 'content_preferences', 'achievements']
 
-# forms.py
-from .models import Content
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        
+        user = profile.user
+        user.first_name = self.cleaned_data.get('first_name', user.first_name)
+        user.last_name = self.cleaned_data.get('last_name', user.last_name)
+        
+        if commit:
+            user.save()  
+            profile.save()  
+        return profile
 
 class ContentUploadForm(forms.ModelForm):
     class Meta:

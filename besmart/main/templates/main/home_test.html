@@ -292,7 +292,9 @@
             <strong>{{ content.description|truncatechars:30 }}</strong><br>
             <small>{{ content.user.username }}</small>
         </div>
-    </div>    
+    </div>   
+    
+    
 
     <div class="post-image">
         {% if content.content_type == 'image' %}
@@ -336,7 +338,7 @@
     <a href="#"><img src="{% static 'main/img/nav-search.png' %}" alt="Search"></a>
     <a href="{% url 'upload_content' %}"><img src="{% static 'main/img/nav-add.png' %}" alt="Add"></a>
     <a href="#"><img src="{% static 'main/img/nav-bell.png' %}" alt="Notifications"></a>
-    <a href="#"><img src="{% static 'main/img/nav-profile.png' %}" alt="Profile"></a>
+    <a href="{% url 'profile_view' %}"><img src="{% static 'main/img/nav-profile.png' %}" alt="Profile"></a>
 </footer>
 </body>
 </html>

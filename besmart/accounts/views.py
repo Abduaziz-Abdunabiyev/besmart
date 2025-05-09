@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
+from .models import Profile
+from .forms import ProfileForm
+from django.contrib.auth.decorators import login_required
+
 
 # Signup form
 class SignUpForm(forms.ModelForm):
@@ -34,7 +38,7 @@ def signup_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Signup successful.")
-            return redirect('update_profile')
+            return redirect('home')
     else:
         form = SignUpForm()
     return render(request, 'accounts/auth.html')
@@ -53,36 +57,23 @@ def login_view(request):
     return render(request, 'accounts/auth.html')
 
 
-from .forms import ProfileForm
-from django.contrib.auth.decorators import login_required
-
 @login_required
 def profile_view(request):
-    profile = request.user.profile
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            messages.success(request, "Profile updated.")
-            return redirect('profile_view')
+            return redirect('home')
     else:
         form = ProfileForm(instance=profile)
-    return render(request, 'accounts/profile.html', {'form': form, 'profile': profile})
 
-
-@login_required
-def update_profile(request):
-    profile = request.user.profile
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Profile updated successfully.")
-            return redirect('update_profile')  # Redirect to the profile page after updating
-    else:
-        form = ProfileForm(instance=profile)
-    
-    return render(request, 'accounts/update_profile.html', {'form': form})
+    context = {
+        'form': form,
+        'profile': profile
+    }
+    return render(request, 'accounts/profile.html', context)
 
 from .forms import ContentUploadForm
 
@@ -94,7 +85,7 @@ def upload_content(request):
             content = form.save(commit=False)
             content.user = request.user
             content.save()
-            return redirect('home')  # or wherever you want to redirect
+            return redirect('home')
     else:
         form = ContentUploadForm()
     return render(request, 'accounts/upload_content.html', {'form': form})
