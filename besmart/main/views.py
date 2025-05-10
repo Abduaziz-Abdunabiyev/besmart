@@ -13,14 +13,27 @@ def home(request):
 # accounts/views.py
 
 from django.shortcuts import redirect, get_object_or_404
-from .models import Content, Like, Comment, Subscription
+from .models import Comment, Subscription
 from django.contrib.auth.decorators import login_required
+
+# views.py
+from django.http import JsonResponse
+from main.models import Content
+from accounts.models import Like
 
 @login_required
 def like_content(request, content_id):
     content = get_object_or_404(Content, id=content_id)
-    Like.objects.get_or_create(user=request.user, content=content)
-    return redirect('home')
+
+    # Create a Like only if it doesn't already exist
+    like, created = Like.objects.get_or_create(user=request.user, content=content)
+
+    if created:
+        content.likes += 1  # optional
+        content.save()
+
+    total_likes = Like.objects.filter(content=content).count()
+    return JsonResponse({'likes': total_likes})
 
 @login_required
 def comment_content(request, content_id):

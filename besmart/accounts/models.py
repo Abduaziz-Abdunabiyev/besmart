@@ -24,7 +24,7 @@ class Profile(models.Model):
     subscribers = models.PositiveIntegerField(default=0)
     total_likes = models.PositiveIntegerField(default=0)
 
-    def full_name(self):
+    def get_full_name(self):
         return f"{self.user.first_name} {self.user.last_name}"
 
 
@@ -38,3 +38,10 @@ class Content(models.Model):
     content_file = models.FileField(upload_to='uploads/')
     upload_time = models.DateTimeField(auto_now_add=True)
     description = models.TextField(blank=True)
+    likes = models.PositiveIntegerField(default=0)  # Новое поле
+
+    
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.ForeignKey(Content, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)

@@ -26,7 +26,6 @@
       border-radius: 16px;
       padding: 50px 50px;
       box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      
     }
 
     .tabs {
@@ -81,16 +80,15 @@
       transition: background 0.3s;
     }
 
+    .form button:hover {
+      background: #FFC107;
+    }
+
     .input_lebal {
       font-size: 16px;
       line-height: 16px;
       color: #828282;
-      margin-bottom: 16px;
-
-    }
-
-    .form button:hover {
-      background: #FFC107;
+      margin-bottom: 8px;
     }
 
     .signup_title {
@@ -98,7 +96,7 @@
       font-size: 24px;
       line-height: 40px;
       text-align: center;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
     .footer {
@@ -116,7 +114,7 @@
 
     .social_wrapper {
       display: flex;
-      align-items:center;
+      align-items: center;
       gap: 4px;
       color: #666;
       font-size: 0.9rem;
@@ -130,7 +128,13 @@
     .social_login {
       border: none;
       cursor: pointer;
+      background: none;
+    }
 
+    .errors {
+      color: red;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -151,19 +155,38 @@
       <button type="submit">Login</button>
     </form>
 
-    <!-- Sign Up Form -->
-    
+    <!-- Signup Form -->
     <form class="form" id="signupForm" method="POST" action="{% url 'signup' %}">
       <p class="signup_title">Create an account</p>
       {% csrf_token %}
-      <label for="username" class="input_lebal">Full name</label>
+      {% if form.errors %}
+        <div class="errors">
+          {% for field in form %}
+            {% for error in field.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <label class="input_lebal" for="full_name">Full Name</label>
+      <input type="text" name="full_name" placeholder="Full Name" required />
+
+      <label class="input_lebal" for="username">Username</label>
       <input type="text" name="username" placeholder="Username" required />
-      <label for="email" class="input_lebal">Email</label>
+
+      <label class="input_lebal" for="email">Email</label>
       <input type="email" name="email" placeholder="Email" required />
-      <label for="password1" class="input_lebal">Password</label>
+
+      <label class="input_lebal" for="password1">Password</label>
       <input type="password" name="password1" placeholder="Password" required />
-      <label for="password2" class="input_lebal">Confirm Password</label>
+
+      <label class="input_lebal" for="password2">Confirm Password</label>
       <input type="password" name="password2" placeholder="Confirm Password" required />
+
       <button type="submit">Sign Up</button>
     </form>
 
@@ -178,9 +201,7 @@
           <img src="{% static 'accounts/css/images/7123953_logo_google_g_icon.png' %}" width="15" alt="Google">
           <button class="social_login">Google</button>
         </div>
-        
       </div>
-      
       © 2025 BeSmart | Learn. Share. Grow.
     </div>
   </div>
