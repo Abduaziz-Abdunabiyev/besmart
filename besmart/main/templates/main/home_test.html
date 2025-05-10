@@ -292,7 +292,13 @@
             <strong>{{ content.description|truncatechars:30 }}</strong><br>
             <small>{{ content.user.username }}</small>
         </div>
+<<<<<<< HEAD
     </div>    
+=======
+    </div>   
+    
+    
+>>>>>>> origin/main
 
     <div class="post-image">
         {% if content.content_type == 'image' %}
@@ -305,11 +311,65 @@
 
     <div class="post-actions">
         <!-- Like Button -->
+<<<<<<< HEAD
         <form action="{% url 'like_content' content.id %}" method="post" class="inline-form">
             {% csrf_token %}
             <button type="submit" class="action-btn like-btn">❤️ {{ content.like_set.count }}</button>
         </form>
 
+=======
+        <form action="{% url 'like_content' content.id %}" method="post" class="inline-form" id="like-form-{{ content.id }}">
+            {% csrf_token %}
+            <button type="submit" class="action-btn like-btn" id="like-btn-{{ content.id }}">
+                ❤️ {{ content.like_set.count }}
+            </button>
+        </form>
+
+        <script>
+            // Get the like button and form element by ID
+            const likeBtn = document.getElementById('like-btn-{{ content.id }}');
+            const likeForm = document.getElementById('like-form-{{ content.id }}');
+
+            // Add a click event listener to the like button
+            likeBtn.addEventListener('click', function(event) {
+                event.preventDefault();  // Prevent the form from being submitted traditionally
+
+                // Send a POST request to toggle like/unlike
+                fetch(likeForm.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')  // Ensure CSRF token is passed
+                    }
+                })
+                .then(response => response.json())  // Parse the JSON response
+                .then(data => {
+                    // Toggle the button text and heart icon based on the response
+                    if (data.action === 'liked') {
+                        likeBtn.innerHTML = `❤️ ${data.total_likes}`;  // Update like count and heart icon
+                    } else if (data.action === 'unliked') {
+                        likeBtn.innerHTML = `🤍 ${data.total_likes}`;  // Update like count and heart icon
+                    }
+                });
+            });
+
+            // Function to get the CSRF token from cookies (for AJAX requests)
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        </script>
+>>>>>>> origin/main
         <!-- Comment Field -->
         <form action="{% url 'comment_content' content.id %}" method="post" class="inline-form comment-form">
             {% csrf_token %}
@@ -336,8 +396,13 @@
     <a href="#"><img src="{% static 'main/img/nav-search.png' %}" alt="Search"></a>
     <a href="{% url 'upload_content' %}"><img src="{% static 'main/img/nav-add.png' %}" alt="Add"></a>
     <a href="#"><img src="{% static 'main/img/nav-bell.png' %}" alt="Notifications"></a>
+<<<<<<< HEAD
     <a href="#"><img src="{% static 'main/img/nav-profile.png' %}" alt="Profile"></a>
 </footer>
 
+=======
+    <a href="{% url 'profile_view' %}"><img src="{% static 'main/img/nav-profile.png' %}" alt="Profile"></a>
+</footer>
+>>>>>>> origin/main
 </body>
 </html>
