@@ -307,11 +307,57 @@
 
     <div class="post-actions">
         <!-- Like Button -->
-        <form action="{% url 'like_content' content.id %}" method="post" class="inline-form">
+        <form action="{% url 'like_content' content.id %}" method="post" class="inline-form" id="like-form-{{ content.id }}">
             {% csrf_token %}
-            <button type="submit" class="action-btn like-btn">❤️ {{ content.like_set.count }}</button>
+            <button type="submit" class="action-btn like-btn" id="like-btn-{{ content.id }}">
+                ❤️ {{ content.like_set.count }}
+            </button>
         </form>
 
+        <script>
+            // Get the like button and form element by ID
+            const likeBtn = document.getElementById('like-btn-{{ content.id }}');
+            const likeForm = document.getElementById('like-form-{{ content.id }}');
+
+            // Add a click event listener to the like button
+            likeBtn.addEventListener('click', function(event) {
+                event.preventDefault();  // Prevent the form from being submitted traditionally
+
+                // Send a POST request to toggle like/unlike
+                fetch(likeForm.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')  // Ensure CSRF token is passed
+                    }
+                })
+                .then(response => response.json())  // Parse the JSON response
+                .then(data => {
+                    // Toggle the button text and heart icon based on the response
+                    if (data.action === 'liked') {
+                        likeBtn.innerHTML = `❤️ ${data.total_likes}`;  // Update like count and heart icon
+                    } else if (data.action === 'unliked') {
+                        likeBtn.innerHTML = `🤍 ${data.total_likes}`;  // Update like count and heart icon
+                    }
+                });
+            });
+
+            // Function to get the CSRF token from cookies (for AJAX requests)
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        </script>
         <!-- Comment Field -->
         <form action="{% url 'comment_content' content.id %}" method="post" class="inline-form comment-form">
             {% csrf_token %}
