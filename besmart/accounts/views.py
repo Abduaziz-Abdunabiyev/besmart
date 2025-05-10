@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -48,7 +45,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('update_profile')  # Redirect to homepage or dashboard
+            return redirect('upload_content')  # Redirect to homepage or dashboard
         else:
             messages.error(request, "Invalid username or password.")
     else:
@@ -86,3 +83,18 @@ def update_profile(request):
         form = ProfileForm(instance=profile)
     
     return render(request, 'accounts/update_profile.html', {'form': form})
+
+from .forms import ContentUploadForm
+
+@login_required
+def upload_content(request):
+    if request.method == 'POST':
+        form = ContentUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            content = form.save(commit=False)
+            content.user = request.user
+            content.save()
+            return redirect('home')  # or wherever you want to redirect
+    else:
+        form = ContentUploadForm()
+    return render(request, 'accounts/upload_content.html', {'form': form})

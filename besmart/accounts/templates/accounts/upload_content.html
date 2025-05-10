@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Content</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/upload.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="upload-container">
+        <a href="{% url 'homepage' %}"><img src="{% static 'accounts/css/images/left-arrow.png' %}" width="35px" alt="upload_img"></a>
+        <div class="upload_img">
+                <img src="{% static 'accounts/css/images/upload_img.jpg' %}" width="200px" alt="upload_img">
+        </div>
+        <h6>Upload Photo or Video</h6>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>Type:</label>
+            {{ form.content_type }}
+            <label>Select file:</label>
+            {{ form.content_file }}
+            <label>Description:</label>
+            {{ form.description }}
+            <button type="submit">Upload</button>
+        </form>
+        
+    </div>
+</body>
+</html>

@@ -156,7 +156,7 @@
     <form class="form" id="signupForm" method="POST" action="{% url 'signup' %}">
       <p class="signup_title">Create an account</p>
       {% csrf_token %}
-      <label for="username" class="input_lebal">Full name</label>
+      <label for="username" class="input_lebal">Username</label>
       <input type="text" name="username" placeholder="Username" required />
       <label for="email" class="input_lebal">Email</label>
       <input type="email" name="email" placeholder="Email" required />
