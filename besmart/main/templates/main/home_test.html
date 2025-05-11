@@ -292,14 +292,7 @@
             <strong>{{ content.description|truncatechars:30 }}</strong><br>
             <small>{{ content.user.username }}</small>
         </div>
-<<<<<<< HEAD
     </div>   
-    
-    
-=======
-    </div>    
->>>>>>> origin/gulmira
-
     <div class="post-image">
         {% if content.content_type == 'image' %}
         <img src="{{ content.content_file.url }}" alt="Image">
@@ -311,7 +304,6 @@
 
     <div class="post-actions">
         <!-- Like Button -->
-<<<<<<< HEAD
         <form action="{% url 'like_content' content.id %}" method="post" class="inline-form" id="like-form-{{ content.id }}">
             {% csrf_token %}
             <button type="submit" class="action-btn like-btn" id="like-btn-{{ content.id }}">
@@ -363,13 +355,6 @@
                 return cookieValue;
             }
         </script>
-=======
-        <form action="{% url 'like_content' content.id %}" method="post" class="inline-form">
-            {% csrf_token %}
-            <button type="submit" class="action-btn like-btn">❤️ {{ content.like_set.count }}</button>
-        </form>
-
->>>>>>> origin/gulmira
         <!-- Comment Field -->
         <form action="{% url 'comment_content' content.id %}" method="post" class="inline-form comment-form">
             {% csrf_token %}
@@ -396,13 +381,7 @@
     <a href="#"><img src="{% static 'main/img/nav-search.png' %}" alt="Search"></a>
     <a href="{% url 'upload_content' %}"><img src="{% static 'main/img/nav-add.png' %}" alt="Add"></a>
     <a href="#"><img src="{% static 'main/img/nav-bell.png' %}" alt="Notifications"></a>
-<<<<<<< HEAD
     <a href="{% url 'profile_view' %}"><img src="{% static 'main/img/nav-profile.png' %}" alt="Profile"></a>
 </footer>
-=======
-    <a href="#"><img src="{% static 'main/img/nav-profile.png' %}" alt="Profile"></a>
-</footer>
-
->>>>>>> origin/gulmira
 </body>
 </html>

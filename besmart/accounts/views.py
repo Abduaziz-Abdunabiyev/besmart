@@ -27,11 +27,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-<<<<<<< HEAD
             return redirect('home')  # Redirect to homepage or dashboard
-=======
-            return redirect('upload_content')  # Redirect to homepage or dashboard
->>>>>>> origin/gulmira
         else:
             messages.error(request, "Invalid username or password.")
     else:
@@ -104,7 +100,6 @@ def upload_content(request):
             content.save()
             return redirect('home')
     else:
-<<<<<<< HEAD
         form = ContentUploadForm()
     return render(request, 'accounts/upload_content.html', {'form': form})
 
@@ -120,23 +115,3 @@ def delete_content(request, content_id):
         if content.content_file:
             content.content_file.delete(save=False)
     return redirect('profile_view')  # Change to your actual profile page URL name
-=======
-        form = ProfileForm(instance=profile)
-    
-    return render(request, 'accounts/update_profile.html', {'form': form})
-
-from .forms import ContentUploadForm
-
-@login_required
-def upload_content(request):
-    if request.method == 'POST':
-        form = ContentUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            content = form.save(commit=False)
-            content.user = request.user
-            content.save()
-            return redirect('home')  # or wherever you want to redirect
-    else:
-        form = ContentUploadForm()
-    return render(request, 'accounts/upload_content.html', {'form': form})
->>>>>>> origin/gulmira
