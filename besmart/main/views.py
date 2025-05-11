@@ -9,6 +9,7 @@ def home(request):
     contents = Content.objects.select_related('user').order_by('-upload_time')
     return render(request, 'main/home_test.html', {'contents': contents})
 
+<<<<<<< HEAD
 from django.shortcuts import redirect, get_object_or_404
 from .models import Comment, Subscription
 from django.contrib.auth.decorators import login_required
@@ -54,6 +55,20 @@ def like_content(request, content_id):
         'total_likes': total_likes,
         'action': action
     })
+=======
+
+# accounts/views.py
+
+from django.shortcuts import redirect, get_object_or_404
+from .models import Content, Like, Comment, Subscription
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def like_content(request, content_id):
+    content = get_object_or_404(Content, id=content_id)
+    Like.objects.get_or_create(user=request.user, content=content)
+    return redirect('home')
+>>>>>>> origin/gulmira
 
 @login_required
 def comment_content(request, content_id):

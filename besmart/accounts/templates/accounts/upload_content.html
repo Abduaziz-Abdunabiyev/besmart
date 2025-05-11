@@ -9,7 +9,15 @@
 </head>
 <body>
     <div class="upload-container">
+<<<<<<< HEAD
         <h2>Upload Photo or Video</h2>
+=======
+        <a href="{% url 'homepage' %}"><img src="{% static 'accounts/css/images/left-arrow.png' %}" width="35px" alt="upload_img"></a>
+        <div class="upload_img">
+                <img src="{% static 'accounts/css/images/upload_img.jpg' %}" width="200px" alt="upload_img">
+        </div>
+        <h6>Upload Photo or Video</h6>
+>>>>>>> origin/gulmira
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <label>Type:</label>
@@ -20,7 +28,11 @@
             {{ form.description }}
             <button type="submit">Upload</button>
         </form>
+<<<<<<< HEAD
         <a href="{% url 'home' %}">Back to Home</a>
+=======
+        
+>>>>>>> origin/gulmira
     </div>
 </body>
 </html>

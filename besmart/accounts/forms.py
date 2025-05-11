@@ -29,6 +29,7 @@ class ContentUploadForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Enter a short description'}),
         }
 
+<<<<<<< HEAD
 
 from django.contrib.auth.models import User
 from .models import Profile
@@ -59,3 +60,15 @@ class SignUpForm(forms.ModelForm):
             user.profile.save()
         return user
 
+=======
+# forms.py
+from .models import Content
+
+class ContentUploadForm(forms.ModelForm):
+    class Meta:
+        model = Content
+        fields = ['content_type', 'content_file', 'description']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Enter a short description'}),
+        }
+>>>>>>> origin/gulmira
