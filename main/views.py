@@ -69,3 +69,19 @@ def subscribe_user(request, user_id):
     creator = get_object_or_404(User, id=user_id)
     Subscription.objects.get_or_create(subscriber=request.user, creator=creator)
     return redirect('home')
+<<<<<<< HEAD:main/views.py
+=======
+
+
+def video_list(request):
+    videos = Content.objects.filter(content_type='video').order_by('-upload_time')
+    return render(request, 'main/videos.html', {'videos': videos})
+
+
+def video_detail(request):
+    contents = Content.objects.select_related('user').order_by('-upload_time')
+    return render(request, 'main/videos_item.html', {'contents': contents})
+
+def reels_list(request):
+    return render(request, 'main/reels.html') 
+>>>>>>> origin/gulmira:besmart/main/views.py

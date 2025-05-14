@@ -8,5 +8,11 @@ urlpatterns = [
     path('like_content/<int:content_id>/', views.like_content, name='like_content'),
     path('comment/<int:content_id>/', views.comment_content, name='comment_content'),
     path('subscribe/<int:user_id>/', views.subscribe_user, name='subscribe_user'),
+<<<<<<< HEAD:main/urls.py
+=======
+    path('videos/', views.video_list, name='video_list'),
+    path('videos_item/', views.video_detail, name='video_detail'),
+    path('reels/', views.reels_list, name='reels_list'),
+>>>>>>> origin/gulmira:besmart/main/urls.py
 
 ]
