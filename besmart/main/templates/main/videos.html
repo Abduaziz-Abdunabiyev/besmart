@@ -1,0 +1,528 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inder&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <title>{% block title %}BeSmart-videos{% endblock %}</title>
+    <style>
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        button {
+          border: none;
+          background: none;
+          cursor: pointer;
+        }
+
+        .videos_container {
+          max-width: 412px;
+          margin: 0 auto;
+          border: 1px solid rgba(234, 229, 229, 1);
+        }
+        .goback_home {
+          padding-top: 32px;
+          padding-left: 10px;
+        }
+
+        .videos_title {
+          font-family: "Montserrat", sans-serif;
+          font-size: 20px;
+          font-weight: 600px;
+          line-height: 30px;
+          max-width: 363px;
+          padding-left: 13px;
+        }
+
+        .post-header {
+          padding: 4px 16px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          {% comment %} margin-bottom: 10px; {% endcomment %}
+        }
+
+        .post-header img {
+          {% comment %} width: 40px;
+          height: 40px;
+          border-radius: 50%; {% endcomment %}
+        }
+
+        .post-info {
+          display: flex;
+          flex-direction: column;
+          gap: 4px
+        }
+        .post-description {
+          font-family: "Sora", sans-serif;
+          font-size: 15px;
+          font-weight: 400px;
+          color: rgba(0, 0, 0, 1);
+        }
+        .post-username {
+          font-family: "Sora", sans-serif;
+          font-size: 15px;
+          font-weight: 400px;
+          color: rgba(71, 71, 71, 1);
+
+        }
+
+        .video_header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 6px 10px;
+        }
+        .video_profile {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+        }
+        .video-name {
+          font-family: "Manrope", sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 100%;
+          color: rgba(2, 2, 2, 1);
+          margin-bottom: 4px;
+        }
+        .video-podpis {
+          font-family: "Sora", sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 100%;
+          color: rgba(0, 0, 0, 0.72)
+        }
+        .video_profile_btn {
+          font-family: "Sora", sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 100%;
+          color: rgba(0, 0, 0, 1);
+          border: none;
+          background: none;
+          border: 1px solid rgba(0, 0, 0, 1);
+          border-radius: 25px;
+          padding: 8px 16px;
+          box-shadow: 0px 4px 4px 0px rgba(255, 0, 0, 0.7);
+        }
+
+        .video_profile_description {
+          color: rgba(0, 0, 0, 1);
+          font-family: "Sora", sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 100%;
+          max-width: 390px;
+          margin-top: 12px;
+          margin-bottom: 10px;
+          padding-left: 13px;
+
+        }
+        .video_like-btn {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          color: rgba(0, 0, 0, 1);
+          font-family: "Sora", sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 100%;
+        }
+
+        .watch_count {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 6px 16px;
+        }
+        .watch_count_wrap {
+          display: flex;
+          align-items: center;
+          gap: 13px;
+        }
+
+        .video_comment_wrap {
+          padding: 6px 11px;
+        }
+        .video-input-comment {
+          width: 392px;
+          background: rgba(221, 221, 221, 1);
+          border-radius: 20px;
+
+        }
+        .video_comment-input {
+          background: none;
+          outline:none;
+          border: none;
+          padding-right: 200px;
+          padding-top: 6px;
+          padding-bottom: 6px;
+          padding-left: 9px;
+        }
+        .video_comment-btn {
+        }
+
+        .more-videos {
+            background-color: #f1f1f1;
+            margin-top: 10px
+        }
+        .more-videos-content {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           padding: 6px 13px;
+
+        }
+        .video-more {
+            font-family: "Manrope", sans-serif;
+          font-size: 15px;
+          font-weight: 600;
+          line-height: 100%;
+        }
+
+        .video-more span {
+            font-family: "Manrope", sans-serif;
+          font-size: 15px;
+          font-weight: 600;
+          line-height: 100%;
+          color: rgba(0, 0, 0, 0.72);
+        }
+        .video_comment-btn {
+        }
+        .video-more-wrap {
+          display: flex;
+          gap: 22px;
+          padding: 10px;
+          margin-bottom: 12px;
+          overflow-x: auto;
+          scroll-behavior: smooth;
+          scrollbar-width: none; /* Firefox uchun */
+          -ms-overflow-style: none;
+        }
+
+        .video-more-wrap::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera uchun */
+        }
+
+        .more-videos-video {
+            flex: 0 0 auto;
+            width: 200px;
+            
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .more-videos-img {
+           box-shadow: 0px 6px 4px rgba(255, 0, 97, 0.7);
+      }
+      .more-videos-text {
+        margin-top: 10px;
+        margin-bottom: 4px;
+        max-width: 133px;
+        font-family: "Manrope", sans-serif;
+          font-size: 15px;
+          font-weight: 600;
+          line-height: 100%;
+      }
+      .more-videos-description {
+        font-family: "Manrope", sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 100%;
+          color: rgba(0, 0, 0, 0.72);
+      }
+
+      .subscribe-btn {
+        font-family: "Sora", sans-serif;
+        font-size: 15px;
+        font-weight: 600px;
+        background: none;
+        border: 0.5px solid rgba(0, 0, 0, 1);
+        border-radius: 20px;
+        color: #000;
+        padding: 6px 12px;
+      }
+
+      .subscribe-btn:hover {
+        background-color: #1eae60;
+      }
+      .subscribe_wrapper {
+        display: flex;
+        margin-left: 60px;
+        
+      }
+
+      .post_menu_dot {
+        width: 25px;
+        height: 25px;
+      }
+
+      .video-footer {
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="videos_container">
+      <div class="goback_home">
+        <a href="{% url 'home' %}"
+          ><img
+            src="{% static 'main/img/9054423_bx_arrow_back_icon 1.png' %}"
+            width="35px"
+            alt="arrow"
+        /></a>
+      </div>
+      <main class="videos">
+        <div class="videos_content">
+          <img
+            src="{% static 'main/img/physics-thumb.png' %}"
+            width="412px"
+            alt="videos"
+          />
+          <h6 class="videos_title">
+            How ChatGPT Will Change the Way You Think
+          </h6>
+        </div>
+        <div class="video_header">
+          <div class="video_profile">
+            <img
+              src="{% static 'main/img/Mask group 2.png' %}"
+              width="35px"
+              alt="video_profile"
+            />
+            <div>
+              <p class="video-name">Екатерина-Физик</p>
+              <p class="video-podpis">100K подписчики</p>
+            </div>
+          </div>
+          <button class="video_profile_btn">Подписаться</button>
+        </div>
+        <p class="video_profile_description">
+          In this video, we explore the impact of ChatGPT on thinking and
+          learning. #AiI #Education
+        </p>
+        <div class="watch_count">
+          <div class="watch_count_wrap">
+            <form>
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="video_like-btn"
+                id="like-btn-{{ content.id }}"
+              >
+                <img
+                  src="{% static 'main/img/3643770_favorite_heart_like_likes_love_icon 1 (1).png' %}"
+                  alt="liked"
+                />
+                3.2K
+              </button>
+            </form>
+            <form>
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="video_like-btn"
+                id="like-btn-{{ content.id }}"
+              >
+                <img
+                  src="{% static 'main/img/8687069_ic_fluent_comment_regular_icon 1.png' %}"
+                  alt="liked"
+                />
+                3.2K
+              </button>
+            </form>
+            <form>
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="video_like-btn"
+                id="like-btn-{{ content.id }}"
+              >
+                <img
+                  src="{% static 'main/img/3844476_eye_see_show_view_watch_icon 1 (1).png' %}"
+                  alt="liked"
+                />
+                3.2K
+              </button>
+            </form>
+            <form>
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="video_like-btn"
+                id="like-btn-{{ content.id }}"
+              >
+                <img
+                  src="{% static 'main/img/9332162_saved_icon 1.png' %}"
+                  alt="liked"
+                />
+              </button>
+            </form>
+          </div>
+          <div class="video-menu">
+            <img
+              src="{% static 'main/img/3844442_dot_menu_more_vertical_icon 2.png' %}"
+              alt="liked"
+            />
+          </div>
+        </div>
+        <div class="video_comment_wrap">
+          <form>
+            {% csrf_token %}
+            <div class="video-input-comment">
+              <input
+                type="text"
+                name="comment"
+                placeholder="💬 Leave a comment..."
+                class="video_comment-input"
+              />
+              <button type="submit" class="video_comment-btn">
+                <img
+                  src="{% static 'main/img/Group (2).png' %}"
+                  alt="right-arrow"
+                />
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="more-videos">
+          <div class="more-videos-content">
+            <p class="video-more">More from <span>Екатерина-Физик</span></p>
+            <button type="submit" class="video_comment-btn" id="scrollRightBtn">
+              <img
+                src="{% static 'main/img/Group (2).png' %}"
+                alt="right-arrow"
+              />
+            </button>
+          </div>
+          <div class="video-more-wrap" id="videoScrollContainer">
+            <div class="more-videos-video">
+              <div class="more-videos-img">
+                <img
+                  src="{% static 'main/img/video one (1).png' %}"
+                  alt="right-arrow"
+                />
+              </div>
+              <p class="more-videos-text">Inside the Human Brain</p>
+              <p class="more-videos-description">#AI #math #py...</p>
+            </div>
+            <div class="more-videos-video">
+              <div class="more-videos-img">
+                <img
+                  src="{% static 'main/img/video one (1).png' %}"
+                  alt="right-arrow"
+                />
+              </div>
+              <p class="more-videos-text">Inside the Human Brain</p>
+              <p class="more-videos-description">#AI #math #py...</p>
+            </div>
+            <div class="more-videos-video">
+              <div class="more-videos-img">
+                <img
+                  src="{% static 'main/img/video one (1).png' %}"
+                  alt="right-arrow"
+                />
+              </div>
+              <p class="more-videos-text">Inside the Human Brain</p>
+              <p class="more-videos-description">#AI #math #py...</p>
+            </div>
+            <div class="more-videos-video">
+              <div class="more-videos-img">
+                <img
+                  src="{% static 'main/img/video one (1).png' %}"
+                  alt="right-arrow"
+                />
+              </div>
+              <p class="more-videos-text">Inside the Human Brain</p>
+              <p class="more-videos-description">#AI #math #py...</p>
+            </div>
+          </div>
+        </div>
+      </main>
+      <div class="video_header">
+        <div class="video_profile">
+          <img
+            src="{% static 'main/img/Mask group 2.png' %}"
+            width="35px"
+            alt="video_profile"
+          />
+          <div>
+            <p class="video-name">Change the world with AI </p>
+            <p class="video-podpis">Mr.someone_loki</p>
+          </div>
+        </div>
+        <div class="subscribe_wrapper">
+            <form>
+              {% csrf_token %}
+              <button type="submit" class="subscribe-btn">
+                Подписаться
+              </button>
+            </form>
+            <div class="post_menu_dot">
+              <img
+                src="{% static 'main/img/3844442_dot_menu_more_vertical_icon 2.png' %}"
+                alt="menu-dot"
+              />
+            </div>
+        </div>
+      </div>
+      <footer class="video-footer">
+        <div>
+            <img
+                src="{% static 'main/img/852 1 (1).png' %}"
+                alt="AI-img"
+              />
+        </div>
+    </footer>
+    </div>
+    </div>
+    <script>
+      document
+        .getElementById("scrollRightBtn")
+        .addEventListener("click", function () {
+          const container = document.getElementById("videoScrollContainer");
+          container.scrollLeft += 220; // 200px + gap
+        });
+    </script>
+  </body>
+</html>

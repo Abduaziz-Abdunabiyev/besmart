@@ -10,5 +10,6 @@ urlpatterns = [
     path('comment/<int:content_id>/', views.comment_content, name='comment_content'),
     path('subscribe/<int:user_id>/', views.subscribe_user, name='subscribe_user'),
     path('videos/', views.video_list, name='video_list'),
+    path('videos/<int:content_id>/', views.video_detail, name='video_detail'),
 
 ]

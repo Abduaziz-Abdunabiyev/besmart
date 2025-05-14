@@ -75,3 +75,11 @@ def subscribe_user(request, user_id):
 def video_list(request):
     videos = Content.objects.filter(content_type='video').order_by('-upload_time')
     return render(request, 'main/videos.html', {'videos': videos})
+
+
+
+def video_detail(request, content_id):
+    content = get_object_or_404(Content, id=content_id, content_type='video')
+    return render(request, 'main/videos_item.html', {'content': content})
+
+
