@@ -1,5 +1,267 @@
 {% extends "main/base.html" %} {% load static %}
 <!-- Load the static template tag -->
 
-{% block title %} BeSmart - Home {% endblock %} 
-{% block content %}{% endblock %}
+{% block title %} BeSmart - Home {% endblock %} {% block content %}
+
+<main class="post">
+  {% for content in contents %}
+  <div class="post-header">
+    {% if content.user.profile.profile_picture %}
+    <img src="{{ content.user.profile.profile_picture.url }}" alt="Avatar" />
+    {% else %}
+    <img
+      src="{% static 'main/img/default-avatar.png' %}"
+      alt="Default Avatar"
+    />
+    {% endif %}
+    <div class="post-info">
+      <p class="post-description">{{ content.description|truncatechars:30 }}</p>
+      <p class="post-username">{{ content.user.username }}</p>
+    </div>
+    <div class="subscribe_wrapper">
+      <form
+        action="{% url 'subscribe_user' content.user.id %}"
+        method="post"
+        class="inline-form"
+      >
+        {% csrf_token %}
+        <button type="submit" class="action-btn subscribe-btn">
+          Подписаться
+        </button>
+      </form>
+      <div class="post_menu_dot">
+        <img
+          src="{% static 'main/img/3844442_dot_menu_more_vertical_icon 2.png' %}"
+          alt="menu-dot"
+        />
+      </div>
+    </div>
+  </div>
+  <a href="{% url 'video_list' %}">videolar</a>
+
+  <div class="post-image">
+    {% if content.content_type == 'image' %}
+    <img src="{{ content.content_file.url }}" alt="Image" />
+    {% elif content.content_type == 'video' %}
+    <video
+      src="{{ content.content_file.url }}"
+      controls
+      style="width: 100%; border-radius: 10px"
+    ></video>
+    {% endif %}
+  </div>
+
+  <div class="post-actions">
+    <!-- Like Button -->
+    <div class="post-actions-content">
+      <div class="post-action-count">
+        <form
+          action="{% url 'like_content' content.id %}"
+          method="post"
+          class="inline-form"
+          id="like-form-{{ content.id }}"
+        >
+          {% csrf_token %}
+          <button type="submit" class="like-btn" data-id="{{ content.id }}" id="like-btn-{{ content.id }}">
+            <img
+              src="{% static 'main/img/3643770_favorite_heart_like_likes_love_icon 1 (1).png' %}"
+              alt="menu-dot"
+            />
+            {{ content.like_set.count }}
+          </button>
+        </form>
+
+        <form
+          action="{% url 'like_content' content.id %}"
+          method="post"
+          class="inline-form"
+          id="like-form-{{ content.id }}"
+        >
+          {% csrf_token %}
+          <button type="submit" class="like-btn" onclick="openCommentModal()" id="like-btn-{{ content.id }}">
+            <img
+              src="{% static 'main/img/115766_bubble_comment_speech_chat_talk_icon 1.png' %}"
+              alt="menu-dot"
+            />
+            {{ content.like_set.count }}
+          </button>
+        </form>
+
+        <form
+          action="{% url 'like_content' content.id %}"
+          method="post"
+          class="inline-form"
+          id="like-form-{{ content.id }}"
+        >
+          {% csrf_token %}
+          <button type="submit" class="like-btn" id="like-btn-{{ content.id }}">
+            <img
+              src="{% static 'main/img/3643739_forward_next_right_share_turn_icon 1.png' %}"
+              alt="menu-dot"
+            />
+            {{ content.like_set.count }}
+          </button>
+        </form>
+      </div>
+      <div>
+        <img src="{% static 'main/img/_icons.png' %}" alt="menu-dot" />
+      </div>
+    </div>
+    <div class="post-data">
+        <div class="post-data-wrap">
+            <p class="post-data-name">ekaterina_fizik</p>
+            <p class="post-data-podpis">Подпишись и учи физику вместе с нами ❤️ </p>
+        </div>
+        <div class="post-data-text">
+            <p class="post-data-description">32,8 тыс. просмотров</p>
+            <span class="post-data-img"></span>
+            <p class="post-data-description">3 месяц назад</p> 
+        </div>
+    </div>
+
+    <!-- Comment Field -->
+    <div id="commentModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeCommentModal()">&times;</span>
+          <form
+      id="comment-form-{{ content.id }}"
+      action="{% url 'comment_content' content.id %}"
+      method="post"
+      class="inline-form comment-form"
+    >
+      {% csrf_token %}
+      <input
+        type="text"
+        name="comment"
+        placeholder="💬 Add a comment..."
+        class="comment-input"
+      />
+      <button type="submit" class="action-btn comment-btn">Post</button>
+    </form>
+
+        </div>
+    </div>
+    
+  </div>
+
+  <p class="caption">
+    {{ content.description }}<br />
+    <small>{{ content.upload_time|date:"F j, Y, g:i a" }}</small>
+  </p>
+  {% endfor %}
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Barcha like tugmalarni topamiz
+        const likeButtons = document.querySelectorAll(".like-btn");
+
+        likeButtons.forEach((likeBtn) => {
+          const contentId = likeBtn.dataset.id;
+          const likeForm = document.getElementById(`like-form-${contentId}`);
+
+          likeBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            fetch(likeForm.action, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.action === "liked") {
+                  likeBtn.innerHTML = `❤️ ${data.total_likes}`;
+                } else if (data.action === "unliked") {
+                  likeBtn.innerHTML = `🤍 ${data.total_likes}`;
+                }
+              });
+          });
+        });
+
+        // CSRF token olish funksiyasi
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === name + "=") {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+      });
+
+      function openCommentModal() {
+        document.getElementById("commentModal").style.display = "block";
+    
+        // ESC tugmasi bosilsa
+        document.onkeydown = function (e) {
+          if (e.key === "Escape") {
+            closeCommentModal();
+          }
+        };
+      }
+    
+      function closeCommentModal() {
+        document.getElementById("commentModal").style.display = "none";
+      }
+    
+      // Modal tashqarisiga bosilsa yopish
+      window.onclick = function (event) {
+        const modal = document.getElementById("commentModal");
+        if (event.target === modal) {
+          closeCommentModal();
+        }
+      };
+
+
+  {% comment %} // Get the like button and form element by ID
+  const likeBtn = document.getElementById("like-btn-{{ content.id }}");
+  const likeForm = document.getElementById("like-form-{{ content.id }}");
+  // Add a click event listener to the like button
+  likeBtn.addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent the form from being submitted traditionally
+
+    // Send a POST request to toggle like/unlike
+    fetch(likeForm.action, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"), // Ensure CSRF token is passed
+      },
+    })
+      .then((response) => response.json()) // Parse the JSON response
+      .then((data) => {
+        // Toggle the button text and heart icon based on the response
+        if (data.action === "liked") {
+          likeBtn.innerHTML = `❤️ ${data.total_likes}`; // Update like count and heart icon
+        } else if (data.action === "unliked") {
+          likeBtn.innerHTML = `🤍 ${data.total_likes}`; // Update like count and heart icon
+        }
+      });
+  });
+
+  // Function to get the CSRF token from cookies (for AJAX requests)
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  } {% endcomment %}
+</script>
+
+{% endblock %}

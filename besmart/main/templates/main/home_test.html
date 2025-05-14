@@ -62,7 +62,7 @@
           id="like-form-{{ content.id }}"
         >
           {% csrf_token %}
-          <button type="submit" class="like-btn" data-id="{{ content.id }} id="like-btn-{{ content.id }}">
+          <button type="submit" class="like-btn" data-id="{{ content.id }}" id="like-btn-{{ content.id }}">
             <img
               src="{% static 'main/img/3643770_favorite_heart_like_likes_love_icon 1 (1).png' %}"
               alt="menu-dot"
