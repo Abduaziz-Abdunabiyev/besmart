@@ -29,6 +29,8 @@
         max-width: 412px;
         margin: 0 auto;
         border: 1px solid rgba(234, 229, 229, 1);
+        padding-top: 30px;
+        margin-bottom: 60px;
       }
 
       .top-bar {
@@ -59,7 +61,6 @@
       .logo_img {
         width:70px;
         height: 56px;
-        {% comment %} box-shadow: 0 0 20px rgba(234, 229, 229, 1) {% endcomment %}
         
       }
 
@@ -85,6 +86,136 @@
         width: 20px;
         
       }
+{% comment %} reels page {% endcomment %}
+
+      .reels {
+        background: #F5F5F5;
+        position: relative;
+      }
+
+      .accordion-images {
+        position: relative; 
+        display: flex;
+       
+      }
+
+      .accordion-images img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        position: relative;
+         /* overlap miqdori */
+        z-index: 1
+
+       
+      }
+      
+      .img-layer {
+    
+      }
+      
+      .img-layer:nth-child(1) {
+        margin-left: 10px;
+        z-index: 2;
+      }
+      .img-layer:nth-child(2) {
+        margin-left: -378px;
+        z-index: 1;
+      }
+
+      .img-layer:nth-child(3) {
+        margin-left: -380px;
+        z-index: 0;
+      }
+
+      .reels_header {
+        display: flex;
+          align-items: center;
+          gap: 90px;
+          padding: 6px 10px;
+          position:absolute;
+        top: 50px;
+        left: 20px;
+        z-index: 3;
+        color: white;
+      }
+      .reels_profile {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+
+      }
+      .reels-name {
+        font-family: "Manrope", sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 100%;
+          color: rgba(255, 255, 255, 0.72);
+          margin-bottom: 4px;
+      }
+      .reels-podpis {
+        font-family: "Sora", sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 100%;
+          color: rgba(255, 255, 255, 0.72)
+      }
+      .reels_profile_btn {
+        font-family: "Sora", sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 100%;
+          color: rgba(255, 255, 255, 0.72);
+          border: none;
+          background: none;
+          border: 1px solid rgba(255, 255, 255, 0.72);
+          border-radius: 25px;
+          padding: 8px 16px;
+        
+      }
+
+    .reels-form {
+       background: rgba(255, 255, 255, 0.72);
+       padding: 4px 4px;
+       border-radius: 10px;
+       color: white;
+       filter: blur(0px);
+      }
+
+    .reels_title {
+        font-family: "Sora", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        max-width: 299px;
+        position:absolute;
+        top: 600px;
+        left: 20px;
+        z-index: 3;
+        color: white;
+    }
+    .reels_name_link {
+        font-family: "Sora", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        position: absolute;
+        top: 640px;
+        left: 20px;
+        z-index: 3;
+        color: rgba(255, 243, 243, 1);
+    }
+    .reels-actions-content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: absolute;
+        top: 500px;
+        left: 350px;
+        z-index: 3;
+    }
+    
+
 
       .heart-icon {
         position: relative;
@@ -208,13 +339,6 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        {% comment %} margin-bottom: 10px; {% endcomment %}
-      }
-
-      .post-header img {
-        {% comment %} width: 40px;
-        height: 40px;
-        border-radius: 50%; {% endcomment %}
       }
 
       .post-info {
@@ -329,6 +453,7 @@
         gap: 14px;
       }
 
+
       .inline-form {
         display: flex;
         align-items: center;
@@ -368,6 +493,7 @@
         font-size: 10px;
         font-weight: 600px;
         color: black;
+        margin-bottom: 5px;
       }
       
       .subscribe-btn {
@@ -459,6 +585,7 @@
         background: #ffffff;
         position: fixed;
         bottom: 0;
+        z-index: 10;
       }
 
       .bottom-nav img {

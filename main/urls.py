@@ -12,5 +12,6 @@ urlpatterns = [
     path('videos/', views.video_list, name='video_list'),
     path('videos_item/', views.video_detail, name='video_detail'),
     path('reels/', views.reels_list, name='reels_list'),
+    path('reels_android/', views.reels_android, name='reels_android'),
 
 ]

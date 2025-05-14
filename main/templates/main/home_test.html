@@ -1,387 +1,267 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>BeSmart - Home</title>
-    <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f8f9fa;
-        }
+{% extends "main/base.html" %} {% load static %}
+<!-- Load the static template tag -->
 
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 16px;
-            background: #ffffff;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo img {
-            width: 32px;
-            height: 32px;
-        }
-
-        .header-icons img {
-            width: 24px;
-            margin-left: 10px;
-        }
-
-        .notif-dot {
-            background-color: red;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 12px;
-            margin-left: -8px;
-            margin-top: -10px;
-            position: absolute;
-        }
-
-        .stories {
-            display: flex;
-            gap: 10px;
-            padding: 10px;
-            background: white;
-            overflow-x: auto;
-        }
-
-        .story {
-            text-align: center;
-        }
-
-        .story img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-        }
-
-        .tab-menu {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            background: white;
-        }
-
-        .tab-menu button {
-            padding: 8px 12px;
-            border: none;
-            background: #eee;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .tab-menu .active {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .notif-badge {
-            background-color: red;
-            color: white;
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 4px;
-        }
-
-        .post {
-            padding: 16px;
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .post-header img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-
-        .post-info {
-            flex-grow: 1;
-        }
-
-        .follow-btn {
-            padding: 4px 10px;
-            border: none;
-            background: #2ed573;
-            color: white;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-
-        .more-icon {
-            width: 20px;
-        }
-
-        .post-image img {
-            width: 100%;
-            border-radius: 10px;
-        }
-
-        .duration {
-            position: absolute;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            padding: 2px 6px;
-            font-size: 12px;
-            right: 10px;
-            bottom: 10px;
-            border-radius: 6px;
-        }
-
-        .post-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .inline-form {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .action-btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 25px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-
-        .action-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .comment-form {
-            flex-direction: row;
-        }
-
-        .comment-input {
-            flex-grow: 1;
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-
-        .like-btn {
-            background-color: #ff4757;
-        }
-
-        .like-btn:hover {
-            background-color: #e84118;
-        }
-
-        .subscribe-btn {
-            background-color: #2ed573;
-        }
-
-        .subscribe-btn:hover {
-            background-color: #1eae60;
-        }
-
-        .caption {
-            margin: 10px 0;
-        }
-
-        .recommendations {
-            display: flex;
-            gap: 10px;
-        }
-
-        .card {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            flex: 1;
-            text-align: center;
-        }
-
-        .card img {
-            width: 100%;
-            border-radius: 6px;
-        }
-
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            background: #ffffff;
-            border-top: 1px solid #ccc;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .bottom-nav img {
-            width: 24px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-
-<header class="top-bar">
-    <div class="logo">
-        <img src="{% static 'main/img/logo.jpg' %}" alt="BeSmart logo">
-        <span>BeSmart</span>
-    </div>
-    <div class="header-icons">
-        <img src="{% static 'main/img/lock-icon.png' %}" alt="Lock">
-        <div class="heart-icon">
-            <img src="{% static 'main/img/heart-icon.png' %}" alt="Likes">
-            <span class="notif-dot">1</span>
-        </div>
-    </div>
-</header>
-
-<section class="stories">
-    <div class="story">
-        <img src="{% static 'main/img/story1.png' %}" alt="Story">
-        <span>My story</span>
-    </div>
-    {% for i in "1234" %}
-    <div class="story">
-        <img src="{% static 'main/img/story1.png' %}" alt="Story">
-        <span>username.me</span>
-    </div>
-    {% endfor %}
-</section>
-
-<nav class="tab-menu">
-    <button>All</button>
-    <button>Reels</button>
-    <button class="active">
-        Video<span class="notif-badge">3</span>
-    </button>
-    <button>Photo</button>
-</nav>
+{% block title %} BeSmart - Home {% endblock %} {% block content %}
 
 <main class="post">
-    {% for content in contents %}
-    <div class="post-header">
-        {% if content.user.profile.profile_picture %}
-            <img src="{{ content.user.profile.profile_picture.url }}" alt="Avatar">
-        {% else %}
-            <img src="{% static 'main/img/default-avatar.png' %}" alt="Default Avatar">
-        {% endif %}
-        <div class="post-info">
-            <strong>{{ content.description|truncatechars:30 }}</strong><br>
-            <small>{{ content.user.username }}</small>
+  {% for content in contents %}
+  <div class="post-header">
+    {% if content.user.profile.profile_picture %}
+    <img src="{{ content.user.profile.profile_picture.url }}" alt="Avatar" />
+    {% else %}
+    <img
+      src="{% static 'main/img/default-avatar.png' %}"
+      alt="Default Avatar"
+    />
+    {% endif %}
+    <div class="post-info">
+      <p class="post-description">{{ content.description|truncatechars:30 }}</p>
+      <p class="post-username">{{ content.user.username }}</p>
+    </div>
+    <div class="subscribe_wrapper">
+      <form
+        action="{% url 'subscribe_user' content.user.id %}"
+        method="post"
+        class="inline-form"
+      >
+        {% csrf_token %}
+        <button type="submit" class="action-btn subscribe-btn">
+          Подписаться
+        </button>
+      </form>
+      <div class="post_menu_dot">
+        <img
+          src="{% static 'main/img/3844442_dot_menu_more_vertical_icon 2.png' %}"
+          alt="menu-dot"
+        />
+      </div>
+    </div>
+  </div>
+  <a href="{% url 'video_list' %}">videolar</a>
+
+  <div class="post-image">
+    {% if content.content_type == 'image' %}
+    <img src="{{ content.content_file.url }}" alt="Image" />
+    {% elif content.content_type == 'video' %}
+    <video
+      src="{{ content.content_file.url }}"
+      controls
+      style="width: 100%; border-radius: 10px"
+    ></video>
+    {% endif %}
+  </div>
+
+  <div class="post-actions">
+    <!-- Like Button -->
+    <div class="post-actions-content">
+      <div class="post-action-count">
+        <form
+          action="{% url 'like_content' content.id %}"
+          method="post"
+          class="inline-form"
+          id="like-form-{{ content.id }}"
+        >
+          {% csrf_token %}
+          <button type="submit" class="like-btn" data-id="{{ content.id }}" id="like-btn-{{ content.id }}">
+            <img
+              src="{% static 'main/img/3643770_favorite_heart_like_likes_love_icon 1 (1).png' %}"
+              alt="menu-dot"
+            />
+            {{ content.like_set.count }}
+          </button>
+        </form>
+
+        <form
+          action="{% url 'like_content' content.id %}"
+          method="post"
+          class="inline-form"
+          id="like-form-{{ content.id }}"
+        >
+          {% csrf_token %}
+          <button type="submit" class="like-btn" onclick="openCommentModal()" id="like-btn-{{ content.id }}">
+            <img
+              src="{% static 'main/img/115766_bubble_comment_speech_chat_talk_icon 1.png' %}"
+              alt="menu-dot"
+            />
+            {{ content.like_set.count }}
+          </button>
+        </form>
+
+        <form
+          action="{% url 'like_content' content.id %}"
+          method="post"
+          class="inline-form"
+          id="like-form-{{ content.id }}"
+        >
+          {% csrf_token %}
+          <button type="submit" class="like-btn" id="like-btn-{{ content.id }}">
+            <img
+              src="{% static 'main/img/3643739_forward_next_right_share_turn_icon 1.png' %}"
+              alt="menu-dot"
+            />
+            {{ content.like_set.count }}
+          </button>
+        </form>
+      </div>
+      <div>
+        <img src="{% static 'main/img/_icons.png' %}" alt="menu-dot" />
+      </div>
+    </div>
+    <div class="post-data">
+        <div class="post-data-wrap">
+            <p class="post-data-name">ekaterina_fizik</p>
+            <p class="post-data-podpis">Подпишись и учи физику вместе с нами ❤️ </p>
         </div>
-    </div>   
-    <div class="post-image">
-        {% if content.content_type == 'image' %}
-        <img src="{{ content.content_file.url }}" alt="Image">
-        {% elif content.content_type == 'video' %}
-        <video src="{{ content.content_file.url }}" controls style="width: 100%; border-radius: 10px;"></video>
-        {% endif %}
-        <span class="duration">{{ content.upload_time|date:"H:i" }}</span>
+        <div class="post-data-text">
+            <p class="post-data-description">32,8 тыс. просмотров</p>
+            <span class="post-data-img"></span>
+            <p class="post-data-description">3 месяц назад</p> 
+        </div>
     </div>
 
-    <div class="post-actions">
-        <!-- Like Button -->
-        <form action="{% url 'like_content' content.id %}" method="post" class="inline-form" id="like-form-{{ content.id }}">
-            {% csrf_token %}
-            <button type="submit" class="action-btn like-btn" id="like-btn-{{ content.id }}">
-                ❤️ {{ content.like_set.count }}
-            </button>
-        </form>
+    <!-- Comment Field -->
+    <div id="commentModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeCommentModal()">&times;</span>
+          <form
+      id="comment-form-{{ content.id }}"
+      action="{% url 'comment_content' content.id %}"
+      method="post"
+      class="inline-form comment-form"
+    >
+      {% csrf_token %}
+      <input
+        type="text"
+        name="comment"
+        placeholder="💬 Add a comment..."
+        class="comment-input"
+      />
+      <button type="submit" class="action-btn comment-btn">Post</button>
+    </form>
 
-        <script>
-            // Get the like button and form element by ID
-            const likeBtn = document.getElementById('like-btn-{{ content.id }}');
-            const likeForm = document.getElementById('like-form-{{ content.id }}');
-
-            // Add a click event listener to the like button
-            likeBtn.addEventListener('click', function(event) {
-                event.preventDefault();  // Prevent the form from being submitted traditionally
-
-                // Send a POST request to toggle like/unlike
-                fetch(likeForm.action, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')  // Ensure CSRF token is passed
-                    }
-                })
-                .then(response => response.json())  // Parse the JSON response
-                .then(data => {
-                    // Toggle the button text and heart icon based on the response
-                    if (data.action === 'liked') {
-                        likeBtn.innerHTML = `❤️ ${data.total_likes}`;  // Update like count and heart icon
-                    } else if (data.action === 'unliked') {
-                        likeBtn.innerHTML = `🤍 ${data.total_likes}`;  // Update like count and heart icon
-                    }
-                });
-            });
-
-            // Function to get the CSRF token from cookies (for AJAX requests)
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-        </script>
-        <!-- Comment Field -->
-        <form action="{% url 'comment_content' content.id %}" method="post" class="inline-form comment-form">
-            {% csrf_token %}
-            <input type="text" name="comment" placeholder="💬 Add a comment..." class="comment-input">
-            <button type="submit" class="action-btn comment-btn">Post</button>
-        </form>
-
-        <!-- Subscribe Button -->
-        <form action="{% url 'subscribe_user' content.user.id %}" method="post" class="inline-form">
-            {% csrf_token %}
-            <button type="submit" class="action-btn subscribe-btn">👤 Подписаться</button>
-        </form>
+        </div>
     </div>
+    
+  </div>
 
-    <p class="caption">
-        {{ content.description }}<br>
-        <small>{{ content.upload_time|date:"F j, Y, g:i a" }}</small>
-    </p>
-    {% endfor %}
+  <p class="caption">
+    {{ content.description }}<br />
+    <small>{{ content.upload_time|date:"F j, Y, g:i a" }}</small>
+  </p>
+  {% endfor %}
 </main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Barcha like tugmalarni topamiz
+        const likeButtons = document.querySelectorAll(".like-btn");
 
-<footer class="bottom-nav">
-    <a href="{% url 'home' %}"><img src="{% static 'main/img/nav-home.png' %}" alt="Home"></a>
-    <a href="#"><img src="{% static 'main/img/nav-search.png' %}" alt="Search"></a>
-    <a href="{% url 'upload_content' %}"><img src="{% static 'main/img/nav-add.png' %}" alt="Add"></a>
-    <a href="#"><img src="{% static 'main/img/nav-bell.png' %}" alt="Notifications"></a>
-    <a href="{% url 'profile_view' %}"><img src="{% static 'main/img/nav-profile.png' %}" alt="Profile"></a>
-</footer>
-</body>
-</html>
+        likeButtons.forEach((likeBtn) => {
+          const contentId = likeBtn.dataset.id;
+          const likeForm = document.getElementById(`like-form-${contentId}`);
+
+          likeBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            fetch(likeForm.action, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.action === "liked") {
+                  likeBtn.innerHTML = `❤️ ${data.total_likes}`;
+                } else if (data.action === "unliked") {
+                  likeBtn.innerHTML = `🤍 ${data.total_likes}`;
+                }
+              });
+          });
+        });
+
+        // CSRF token olish funksiyasi
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === name + "=") {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+      });
+
+      function openCommentModal() {
+        document.getElementById("commentModal").style.display = "block";
+    
+        // ESC tugmasi bosilsa
+        document.onkeydown = function (e) {
+          if (e.key === "Escape") {
+            closeCommentModal();
+          }
+        };
+      }
+    
+      function closeCommentModal() {
+        document.getElementById("commentModal").style.display = "none";
+      }
+    
+      // Modal tashqarisiga bosilsa yopish
+      window.onclick = function (event) {
+        const modal = document.getElementById("commentModal");
+        if (event.target === modal) {
+          closeCommentModal();
+        }
+      };
+
+
+  {% comment %} // Get the like button and form element by ID
+  const likeBtn = document.getElementById("like-btn-{{ content.id }}");
+  const likeForm = document.getElementById("like-form-{{ content.id }}");
+  // Add a click event listener to the like button
+  likeBtn.addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent the form from being submitted traditionally
+
+    // Send a POST request to toggle like/unlike
+    fetch(likeForm.action, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"), // Ensure CSRF token is passed
+      },
+    })
+      .then((response) => response.json()) // Parse the JSON response
+      .then((data) => {
+        // Toggle the button text and heart icon based on the response
+        if (data.action === "liked") {
+          likeBtn.innerHTML = `❤️ ${data.total_likes}`; // Update like count and heart icon
+        } else if (data.action === "unliked") {
+          likeBtn.innerHTML = `🤍 ${data.total_likes}`; // Update like count and heart icon
+        }
+      });
+  });
+
+  // Function to get the CSRF token from cookies (for AJAX requests)
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  } {% endcomment %}
+</script>
+
+{% endblock %}
