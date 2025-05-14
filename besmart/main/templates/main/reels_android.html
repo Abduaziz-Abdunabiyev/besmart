@@ -1,0 +1,431 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inder&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <title>{% block title %}BeSmart-videos{% endblock %}</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      button {
+        border: none;
+        background: none;
+        cursor: pointer;
+      }
+
+      .reels_android_container {
+        max-width: 412px;
+        margin: 0 auto;
+        border: 1px solid rgba(234, 229, 229, 1);
+        background: black;
+        margin-bottom: 60px;
+      }
+      .goback_home {
+        padding-top: 32px;
+        padding-left: 10px;
+        color: white;
+        position: absolute;
+        top: 20px;
+        left: 10px;
+      }
+
+      .reels_android {
+        position: relative;
+        padding-top: 50px;
+      }
+
+      .reels-actions-content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: absolute;
+        top: 620px;
+        left: 364px;
+      }
+
+      .reels_android-music {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "Sora", sans-serif;
+        font-size: 10px;
+        font-weight: 600px;
+        color: rgba(255, 255, 255, 1);
+        position: absolute;
+        top: 744px;
+        left: 12px;
+      }
+
+      .reels-form button {
+        color: white;
+      }
+
+      .like-btn {
+        display: flex;
+        flex-direction: column;
+        border: none;
+        background: none;
+        font-family: "Sora", sans-serif;
+        font-size: 10px;
+        font-weight: 600px;
+        margin-bottom: 5px;
+      }
+
+      .modal {
+        display: none; /* Yopiq holatda */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); /* qora fon */
+      }
+
+      .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+      }
+
+      .close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        color: #888;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .reels_android-profile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .video_profile {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        padding-left: 8px;
+        padding-top: 10px; 
+        padding-bottom: 10px; 
+        padding-right: 10px; 
+    }
+    .reels_android_title {
+        color: rgba(255, 243, 243, 1);
+        font-family: "Sora", sans-serif;
+        font-size: 8px;
+        font-weight: 600px;
+        
+    }
+    .subscribe_wrapper {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 8px;
+    }
+
+    .subscribe-btn {
+        border: 0.5px solid rgba(255, 255, 255, 1);
+        color: rgba(255, 255, 255, 1);
+        font-family: "Sora", sans-serif;
+        font-size: 10px;
+        font-weight: 600px;
+        padding: 4px 16px;
+        border-radius: 8px;
+      }
+    .reels_android-name {
+        color: rgba(255, 243, 243, 1);
+        font-family: "Sora", sans-serif;
+        font-size: 12px;
+        font-weight: 600px;
+    }
+    .reels_android_description {
+        color: rgba(255, 243, 243, 1);
+        font-family: "Sora", sans-serif;
+        font-size: 8px;
+        font-weight: 600px;
+    }
+    .post_menu_dot {
+    }
+
+      .bottom-nav {
+        display: flex;
+        align-items: center;
+        gap: 58px;
+        padding: 16px 32px;
+        position: fixed;
+        bottom: 0;
+        z-index: 10;
+      }
+
+      .reels-bottom-nav {
+        background: #000;
+      }
+
+      .bottom-nav img {
+        width: 24px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reels_android_container">
+      <main class="reels_android">
+        <div class="goback_home">
+          <a href="{% url 'reels_list' %}"
+            ><img
+              src="{% static 'main/img/9054423_bx_arrow_back_icon 2.png' %}"
+              width="35px"
+              alt="arrow"
+          /></a>
+        </div>
+        <div class="reels_android-images">
+          <img
+            src="{% static 'main/img/cats3 1 (1).png' %}"
+            width="412px"
+            alt="Image 1"
+            class="img-layer"
+          />
+        </div>
+        <div class="reels-actions-content">
+          <form class="reels-form">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="like-btn"
+              data-id="{{ content.id }}"
+              id="like-btn-{{ content.id }}"
+            >
+              <img
+                src="{% static 'main/img/Vector (9).png' %}"
+                alt="menu-dot"
+              />
+              3.2K
+            </button>
+          </form>
+
+          <form class="reels-form">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="like-btn"
+              onclick="openCommentModal()"
+              id="like-btn-{{ content.id }}"
+            >
+              <img
+                src="{% static 'main/img/Vector (10).png' %}"
+                alt="menu-dot"
+              />
+              3.2K
+            </button>
+          </form>
+
+          <form class="reels-form">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="like-btn"
+              id="like-btn-{{ content.id }}"
+            >
+              <img
+                src="{% static 'main/img/Layer 51 (2).png' %}"
+                alt="menu-dot"
+              />
+            </button>
+          </form>
+        </div>
+        <!-- Comment Field -->
+        <div id="commentModal" class="modal">
+          <div class="modal-content">
+            <span class="close" onclick="closeCommentModal()">&times;</span>
+            <form class="inline-form comment-form">
+              {% csrf_token %}
+              <input
+                type="text"
+                name="comment"
+                placeholder="💬 Add a comment..."
+                class="comment-input"
+              />
+              <button type="submit" class="action-btn comment-btn">Post</button>
+            </form>
+          </div>
+        </div>
+        <div class="reels_android-music">
+          <img
+            src="{% static 'main/img/5310129_music_social media_songs_icon 1.png' %}"
+            alt="music_img"
+          />
+          <p>How ChatGPT Will Chan...</p>
+        </div>
+        <div class="reels_android-profile">
+          <div class="video_profile">
+            <img
+              src="{% static 'main/img/Mask group 2.png' %}"
+              width="35px"
+              alt="video_profile"
+            />
+            <div class="reels_android_info">
+              <div class="subscribe_wrapper">
+                <p class="reels_android-name">ekaterina_fizik</p>
+                <form>
+                  {% csrf_token %}
+                  <button type="submit" class="subscribe-btn">
+                    Подписаться
+                  </button>
+                </form>
+              </div>
+
+              <p class="reels_android_title">
+                How ChatGPT Will Change the Way You Think
+              </p>
+              <p class="reels_android_description">#rec #cats #funnycat</p>
+            </div>
+          </div>
+          <div class="post_menu_dot">
+            <img
+              src="{% static 'main/img/3844442_dot_menu_more_vertical_icon 4.png' %}"
+              alt="menu-dot"
+            />
+          </div>
+        </div>
+      </main>
+      <footer class="bottom-nav reels-bottom-nav">
+        <a href="{% url 'home' %}">
+          <img src="{% static 'main/img/nav-home.png' %}" alt="Home" />
+        </a>
+        <a href="#">
+          <img src="{% static 'main/img/nav-search.png' %}" alt="Search" />
+        </a>
+        <a href="{% url 'upload_content' %}">
+          <img src="{% static 'main/img/nav-add.png' %}" alt="Add" />
+        </a>
+        <a href="#">
+          <img src="{% static 'main/img/nav-bell.png' %}" alt="Notifications" />
+        </a>
+        <a href="{% url 'profile_view' %}">
+          <img src="{% static 'main/img/nav-profile.png' %}" alt="Profile" />
+        </a>
+      </footer>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Barcha like tugmalarni topamiz
+        const likeButtons = document.querySelectorAll(".like-btn");
+
+        likeButtons.forEach((likeBtn) => {
+          const contentId = likeBtn.dataset.id;
+          const likeForm = document.getElementById(`like-form-${contentId}`);
+
+          likeBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            fetch(likeForm.action, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.action === "liked") {
+                  likeBtn.innerHTML = `❤️ ${data.total_likes}`;
+                } else if (data.action === "unliked") {
+                  likeBtn.innerHTML = `🤍 ${data.total_likes}`;
+                }
+              });
+          });
+        });
+
+        // CSRF token olish funksiyasi
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === name + "=") {
+                cookieValue = decodeURIComponent(
+                  cookie.substring(name.length + 1)
+                );
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+      });
+
+      function openCommentModal() {
+        document.getElementById("commentModal").style.display = "block";
+
+        // ESC tugmasi bosilsa
+        document.onkeydown = function (e) {
+          if (e.key === "Escape") {
+            closeCommentModal();
+          }
+        };
+      }
+
+      function closeCommentModal() {
+        document.getElementById("commentModal").style.display = "none";
+      }
+
+      // Modal tashqarisiga bosilsa yopish
+      window.onclick = function (event) {
+        const modal = document.getElementById("commentModal");
+        if (event.target === modal) {
+          closeCommentModal();
+        }
+      };
+    </script>
+  </body>
+</html>

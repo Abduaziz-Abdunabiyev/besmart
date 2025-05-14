@@ -38,7 +38,6 @@
     </div>
   </div>
   <a href="{% url 'video_list' %}">videolar</a>
- 
 
   <div class="post-image">
     {% if content.content_type == 'image' %}
@@ -63,7 +62,12 @@
           id="like-form-{{ content.id }}"
         >
           {% csrf_token %}
-          <button type="submit" class="like-btn" data-id="{{ content.id }}" id="like-btn-{{ content.id }}">
+          <button
+            type="submit"
+            class="like-btn"
+            data-id="{{ content.id }}"
+            id="like-btn-{{ content.id }}"
+          >
             <img
               src="{% static 'main/img/3643770_favorite_heart_like_likes_love_icon 1 (1).png' %}"
               alt="menu-dot"
@@ -79,7 +83,12 @@
           id="like-form-{{ content.id }}"
         >
           {% csrf_token %}
-          <button type="submit" class="like-btn" onclick="openCommentModal()" id="like-btn-{{ content.id }}">
+          <button
+            type="submit"
+            class="like-btn"
+            onclick="openCommentModal()"
+            id="like-btn-{{ content.id }}"
+          >
             <img
               src="{% static 'main/img/115766_bubble_comment_speech_chat_talk_icon 1.png' %}"
               alt="menu-dot"
@@ -109,43 +118,39 @@
       </div>
     </div>
     <div class="post-data">
-        <div class="post-data-wrap">
-            <p class="post-data-name">ekaterina_fizik</p>
-            <p class="post-data-podpis">Подпишись и учи физику вместе с нами ❤️ </p>
-        </div>
-        <div class="post-data-text">
-            <p class="post-data-description">32,8 тыс. просмотров</p>
-            <span class="post-data-img"></span>
-            <p class="post-data-description">3 месяц назад</p> 
-        </div>
+      <div class="post-data-wrap">
+        <p class="post-data-name">ekaterina_fizik</p>
+        <p class="post-data-podpis">Подпишись и учи физику вместе с нами ❤️</p>
+      </div>
+      <div class="post-data-text">
+        <p class="post-data-description">32,8 тыс. просмотров</p>
+        <span class="post-data-img"></span>
+        <p class="post-data-description">3 месяц назад</p>
+      </div>
     </div>
-    <a href="{% url 'reels_list' %}" class="view-video-btn">
-        Reels
-      </a>
+    <a href="{% url 'reels_list' %}" class="view-video-btn"> Reels </a>
 
     <!-- Comment Field -->
     <div id="commentModal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick="closeCommentModal()">&times;</span>
-          <form
-      id="comment-form-{{ content.id }}"
-      action="{% url 'comment_content' content.id %}"
-      method="post"
-      class="inline-form comment-form"
-    >
-      {% csrf_token %}
-      <input
-        type="text"
-        name="comment"
-        placeholder="💬 Add a comment..."
-        class="comment-input"
-      />
-      <button type="submit" class="action-btn comment-btn">Post</button>
-    </form>
-
-        </div>
+      <div class="modal-content">
+        <span class="close" onclick="closeCommentModal()">&times;</span>
+        <form
+          id="comment-form-{{ content.id }}"
+          action="{% url 'comment_content' content.id %}"
+          method="post"
+          class="inline-form comment-form"
+        >
+          {% csrf_token %}
+          <input
+            type="text"
+            name="comment"
+            placeholder="💬 Add a comment..."
+            class="comment-input"
+          />
+          <button type="submit" class="action-btn comment-btn">Post</button>
+        </form>
+      </div>
     </div>
-    
   </div>
 
   <p class="caption">
@@ -203,7 +208,7 @@
 
       function openCommentModal() {
         document.getElementById("commentModal").style.display = "block";
-    
+
         // ESC tugmasi bosilsa
         document.onkeydown = function (e) {
           if (e.key === "Escape") {
@@ -211,11 +216,11 @@
           }
         };
       }
-    
+
       function closeCommentModal() {
         document.getElementById("commentModal").style.display = "none";
       }
-    
+
       // Modal tashqarisiga bosilsa yopish
       window.onclick = function (event) {
         const modal = document.getElementById("commentModal");

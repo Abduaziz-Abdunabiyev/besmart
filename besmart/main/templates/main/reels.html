@@ -1,23 +1,170 @@
 {% extends "main/base.html" %} {% load static %}
 <!-- Load the static template tag -->
 
-{% block title %} BeSmart - Home {% endblock %}
-
-{% block extra_head %}
-  <style>
-    body {
-      background-color: #f5f5f5;
-    }
-    .hero {
-      font-size: 24px;
-      text-align: center;
-    }
-  </style>
-{% endblock %}
-
-{% block content %}
-<div class="hero">
-    <h1>Welcome to BeSmart!</h1>
-    <p>Your journey to a smarter future begins here.</p>
+{% block title %} BeSmart - Home {% endblock %} {% block content %}
+<main class="reels">
+  <a href="{% url 'reels_android' %}" class="view-video-btn">
+    Videoni ko‘rish
+  </a>
+  <a href="{% url 'video_detail' %}" class="view-video-btn">
+    Video_detail
+  </a>
+  <div class="accordion-images">
+    <img
+      src="{% static 'main/img/cats3 1 (1).png' %}"
+      alt="Image 1"
+      class="img-layer"
+    />
+    <img
+      src="{% static 'main/img/cats 1 (1).png' %}"
+      alt="Image 2"
+      class="img-layer"
+    />
+    <img
+      src="{% static 'main/img/cats 2 1 (1).png' %}"
+      alt="Image 3"
+      class="img-layer"
+    />
   </div>
+  <div class="reels_header">
+    <div class="reels_profile">
+      <img
+        src="{% static 'main/img/Mask group 2.png' %}"
+        width="35px"
+        alt="reels_profile"
+      />
+      <div>
+        <p class="reels-name">Екатерина-Физик</p>
+        <p class="reels-podpis">100K подписчики</p>
+      </div>
+    </div>
+    <button class="reels_profile_btn">Подписаться</button>
+  </div>
+  <h6 class="reels_title">How ChatGPT Will Change the Way You Think</h6>
+  <a href="" class="reels_name_link">Екатерина-Физик</a>
+  <div class="reels-actions-content">
+    <form class="reels-form">
+      {% csrf_token %}
+      <button
+        type="submit"
+        class="like-btn"
+        data-id="{{ content.id }}"
+        id="like-btn-{{ content.id }}"
+      >
+        <img src="{% static 'main/img/Vector (9).png' %}" alt="menu-dot" />
+        3.2K
+      </button>
+    </form>
+
+    <form class="reels-form">
+      {% csrf_token %}
+      <button type="submit" class="like-btn" onclick="openCommentModal()" id="like-btn-{{ content.id }}">
+        <img
+          src="{% static 'main/img/8687069_ic_fluent_comment_regular_icon 1.png' %}"
+          alt="menu-dot"
+        />
+        3.2K
+      </button>
+    </form>
+
+    <form class="reels-form">
+      {% csrf_token %}
+      <button type="submit" class="like-btn" id="like-btn-{{ content.id }}">
+        <img
+          src="{% static 'main/img/3643739_forward_next_right_share_turn_icon 1.png' %}"
+          alt="menu-dot"
+        />
+      </button>
+    </form>
+  </div>
+  <!-- Comment Field -->
+  <div id="commentModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCommentModal()">&times;</span>
+      <form
+        class="inline-form comment-form"
+      >
+        {% csrf_token %}
+        <input
+          type="text"
+          name="comment"
+          placeholder="💬 Add a comment..."
+          class="comment-input"
+        />
+        <button type="submit" class="action-btn comment-btn">Post</button>
+      </form>
+    </div>
+  </div>
+</main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Barcha like tugmalarni topamiz
+    const likeButtons = document.querySelectorAll(".like-btn");
+
+    likeButtons.forEach((likeBtn) => {
+      const contentId = likeBtn.dataset.id;
+      const likeForm = document.getElementById(`like-form-${contentId}`);
+
+      likeBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        fetch(likeForm.action, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.action === "liked") {
+              likeBtn.innerHTML = `❤️ ${data.total_likes}`;
+            } else if (data.action === "unliked") {
+              likeBtn.innerHTML = `🤍 ${data.total_likes}`;
+            }
+          });
+      });
+    });
+
+    // CSRF token olish funksiyasi
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  });
+
+  function openCommentModal() {
+    document.getElementById("commentModal").style.display = "block";
+
+    // ESC tugmasi bosilsa
+    document.onkeydown = function (e) {
+      if (e.key === "Escape") {
+        closeCommentModal();
+      }
+    };
+  }
+
+  function closeCommentModal() {
+    document.getElementById("commentModal").style.display = "none";
+  }
+
+  // Modal tashqarisiga bosilsa yopish
+  window.onclick = function (event) {
+    const modal = document.getElementById("commentModal");
+    if (event.target === modal) {
+      closeCommentModal();
+    }
+  };
+
+</script>
 {% endblock %}
