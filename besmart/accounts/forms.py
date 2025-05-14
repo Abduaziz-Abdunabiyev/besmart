@@ -29,7 +29,7 @@ class ContentUploadForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Enter a short description'}),
         }
 
-<<<<<<< HEAD
+
 # forms.py
 from .models import Content
 
@@ -40,7 +40,6 @@ class ContentUploadForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Enter a short description'}),
         }
-=======
 
 from django.contrib.auth.models import User
 from .models import Profile
@@ -71,4 +70,3 @@ class SignUpForm(forms.ModelForm):
             user.profile.save()
         return user
 
->>>>>>> origin/main

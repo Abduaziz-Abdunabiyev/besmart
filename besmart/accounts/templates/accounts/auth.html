@@ -159,9 +159,6 @@
     <form class="form" id="signupForm" method="POST" action="{% url 'signup' %}">
       <p class="signup_title">Create an account</p>
       {% csrf_token %}
-<<<<<<< HEAD
-      <label for="username" class="input_lebal">Username</label>
-=======
       {% if form.errors %}
         <div class="errors">
           {% for field in form %}
@@ -179,7 +176,6 @@
       <input type="text" name="full_name" placeholder="Full Name" required />
 
       <label class="input_lebal" for="username">Username</label>
->>>>>>> origin/main
       <input type="text" name="username" placeholder="Username" required />
 
       <label class="input_lebal" for="email">Email</label>

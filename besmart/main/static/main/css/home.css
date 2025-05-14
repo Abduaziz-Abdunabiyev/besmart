@@ -21,10 +21,6 @@ body {
     align-items: center;
 }
 
-.top-bar .logo img {
-    height: 30px;
-    margin-right: 10px;
-}
 
 .top-bar .header-icons img {
     margin-left: 15px;
