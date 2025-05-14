@@ -1,0 +1,23 @@
+{% extends "main/base.html" %} {% load static %}
+<!-- Load the static template tag -->
+
+{% block title %} BeSmart - Home {% endblock %}
+
+{% block extra_head %}
+  <style>
+    body {
+      background-color: #f5f5f5;
+    }
+    .hero {
+      font-size: 24px;
+      text-align: center;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Welcome to BeSmart!</h1>
+    <p>Your journey to a smarter future begins here.</p>
+  </div>
+{% endblock %}

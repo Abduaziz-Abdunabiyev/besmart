@@ -38,6 +38,7 @@
     </div>
   </div>
   <a href="{% url 'video_list' %}">videolar</a>
+ 
 
   <div class="post-image">
     {% if content.content_type == 'image' %}
@@ -118,6 +119,9 @@
             <p class="post-data-description">3 месяц назад</p> 
         </div>
     </div>
+    <a href="{% url 'reels_list' %}" class="view-video-btn">
+        Reels
+      </a>
 
     <!-- Comment Field -->
     <div id="commentModal" class="modal">

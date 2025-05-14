@@ -79,4 +79,7 @@ def video_list(request):
 
 def video_detail(request):
     contents = Content.objects.select_related('user').order_by('-upload_time')
-    return render(request, 'main/videos_item.html', {'contents': contents})  
+    return render(request, 'main/videos_item.html', {'contents': contents})
+
+def reels_list(request):
+    return render(request, 'main/reels.html') 

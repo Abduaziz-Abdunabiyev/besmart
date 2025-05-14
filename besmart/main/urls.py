@@ -11,5 +11,6 @@ urlpatterns = [
     path('subscribe/<int:user_id>/', views.subscribe_user, name='subscribe_user'),
     path('videos/', views.video_list, name='video_list'),
     path('videos_item/', views.video_detail, name='video_detail'),
+    path('reels/', views.reels_list, name='reels_list'),
 
 ]
