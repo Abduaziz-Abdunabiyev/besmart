@@ -1,89 +1,68 @@
-{% extends "main/base.html" %} {% load static %}
-<!-- Load the static template tag -->
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} BeSmart - Reels {% endblock %}
 
-{% block title %} BeSmart - Home {% endblock %} {% block content %}
+{% block content %}
 <main class="reels">
-  <a href="{% url 'reels_android' %}" class="view-video-btn">
-    Videoni ko‘rish
-  </a>
-  <a href="{% url 'video_detail' %}" class="view-video-btn">
-    Video_detail
-  </a>
-  <div class="accordion-images">
-    <img
-      src="{% static 'main/img/cats3 1 (1).png' %}"
-      alt="Image 1"
-      class="img-layer"
-    />
-    <img
-      src="{% static 'main/img/cats 1 (1).png' %}"
-      alt="Image 2"
-      class="img-layer"
-    />
-    <img
-      src="{% static 'main/img/cats 2 1 (1).png' %}"
-      alt="Image 3"
-      class="img-layer"
-    />
-  </div>
-  <div class="reels_header">
-    <div class="reels_profile">
-      <img
-        src="{% static 'main/img/Mask group 2.png' %}"
-        width="35px"
-        alt="reels_profile"
-      />
-      <div>
-        <p class="reels-name">Екатерина-Физик</p>
-        <p class="reels-podpis">100K подписчики</p>
+  {% for content in contents %}
+    <div class="reel-card">
+      <video width="100%" height="300" controls>
+        <source src="{{ content.content_file.url }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <div class="reels_header">
+        <div class="reels_profile">
+          {% with content.user.profile as profile %}
+            {% if profile.avatar %}
+              <img src="{{ profile.avatar.url }}" width="35px" alt="Avatar" />
+            {% else %}
+              <img src="{% static 'main/img/default-avatar.png' %}" width="35px" alt="Default Avatar" />
+            {% endif %}
+            <div>
+              <p class="reels-name">{{ profile.full_name|default:content.user.username }}</p>
+              <p class="reels-podpis">{{ profile.subscribers }} подписчики</p>
+            </div>
+          {% endwith %}
+        </div>
+        <button class="reels_profile_btn">Подписаться</button>
+      </div>
+
+      <h6 class="reels_title">{{ content.description|default:"No description" }}</h6>
+      <a href="#" class="reels_name_link">{{ content.user.username }}</a>
+
+      <div class="reels-actions-content">
+        <form class="reels-form" method="POST" action="{% url 'like_content' content.id %}">
+          {% csrf_token %}
+          <button type="submit" class="like-btn">
+            <img src="{% static 'main/img/Vector (9).png' %}" alt="like" />
+            {{ content.likes }}
+          </button>
+        </form>
+
+        <form class="reels-form" onsubmit="openCommentModal(); return false;">
+          <button type="submit" class="like-btn">
+            <img src="{% static 'main/img/8687069_ic_fluent_comment_regular_icon 1.png' %}" alt="comment" />
+            💬
+          </button>
+        </form>
+
+        <form class="reels-form">
+          <button type="submit" class="like-btn">
+            <img src="{% static 'main/img/3643739_forward_next_right_share_turn_icon 1.png' %}" alt="share" />
+          </button>
+        </form>
       </div>
     </div>
-    <button class="reels_profile_btn">Подписаться</button>
-  </div>
-  <h6 class="reels_title">How ChatGPT Will Change the Way You Think</h6>
-  <a href="" class="reels_name_link">Екатерина-Физик</a>
-  <div class="reels-actions-content">
-    <form class="reels-form">
-      {% csrf_token %}
-      <button
-        type="submit"
-        class="like-btn"
-        data-id="{{ content.id }}"
-        id="like-btn-{{ content.id }}"
-      >
-        <img src="{% static 'main/img/Vector (9).png' %}" alt="menu-dot" />
-        3.2K
-      </button>
-    </form>
+  {% empty %}
+    <p>No short videos (reels) available yet.</p>
+  {% endfor %}
 
-    <form class="reels-form">
-      {% csrf_token %}
-      <button type="submit" class="like-btn" onclick="openCommentModal()" id="like-btn-{{ content.id }}">
-        <img
-          src="{% static 'main/img/8687069_ic_fluent_comment_regular_icon 1.png' %}"
-          alt="menu-dot"
-        />
-        3.2K
-      </button>
-    </form>
-
-    <form class="reels-form">
-      {% csrf_token %}
-      <button type="submit" class="like-btn" id="like-btn-{{ content.id }}">
-        <img
-          src="{% static 'main/img/3643739_forward_next_right_share_turn_icon 1.png' %}"
-          alt="menu-dot"
-        />
-      </button>
-    </form>
-  </div>
-  <!-- Comment Field -->
+  <!-- Comment Modal -->
   <div id="commentModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeCommentModal()">&times;</span>
-      <form
-        class="inline-form comment-form"
-      >
+      <form class="inline-form comment-form">
         {% csrf_token %}
         <input
           type="text"
@@ -96,6 +75,7 @@
     </div>
   </div>
 </main>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     // Barcha like tugmalarni topamiz

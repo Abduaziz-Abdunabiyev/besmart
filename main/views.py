@@ -111,3 +111,36 @@ def video_detail(request):
 # def content_photo(request):
 #     contents = Content.objects.filter(content_type='image').order_by('-upload_time')
 #     return render(request, 'main/content_list.html', {'contents': contents, 'current_tab': 'photo'})
+
+
+def reels_android(request):
+    contents = Content.objects.select_related('user').order_by('-upload_time')
+    return render(request, 'main/reels_android.html', {'contents': contents})
+
+
+def reels_list(request):
+    contents = Content.objects.filter(content_type='video', duration__lte=60).order_by('-upload_time')
+    return render(request, 'main/reels.html', {'contents': contents, 'current_tab': 'contents'})
+
+
+def video_list(request):
+    contents = Content.objects.filter(content_type='video', duration__gt=60).order_by('-upload_time')
+    return render(request, 'main/videos_item.html', {'contents': contents, 'current_tab': 'video'})
+
+
+#  Reel Detail View
+def reel_detail(request, pk):
+    content = get_object_or_404(Content, pk=pk, content_type='video', duration__lte=60)
+    return render(request, 'main/reels_android.html', {'content': content})
+
+
+# Video Detail View
+def video_detail(request, pk):
+    content = get_object_or_404(Content, pk=pk, content_type='video', duration__gt=60)
+    return render(request, 'main/videos.html', {'content': content})
+
+
+# Image Detail View
+# def image_detail(request, pk):
+#     content = get_object_or_404(Content, pk=pk, content_type='image')
+#     return render(request, 'main/image_detail.html', {'content': content})

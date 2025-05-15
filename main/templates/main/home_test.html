@@ -40,17 +40,15 @@
   </div>
   <a href="{% url 'video_list' %}">videolar</a>
 
-  <div class="post-image">
-    {% if content.content_type == 'image' %}
-    <img src="{{ content.content_file.url }}" alt="Image" />
-    {% elif content.content_type == 'video' %}
-    <video
-      src="{{ content.content_file.url }}"
-      controls
-      style="width: 100%; border-radius: 10px"
-    ></video>
-    {% endif %}
-  </div>
+    <div class="post-image redirect-content" 
+        data-type="{{ content.content_type }}" 
+        data-id="{{ content.id }}">
+      {% if content.content_type == 'image' %}
+        <img src="{{ content.content_file.url }}" alt="Image" />
+      {% elif content.content_type == 'video' or content.content_type == 'reels' %}
+        <video src="{{ content.content_file.url }}" controls style="width: 100%; border-radius: 10px"></video>
+      {% endif %}
+    </div>
 
   <div class="post-actions">
     <!-- Like Button -->
@@ -152,82 +150,80 @@
   {% endfor %}
 </main>
 <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const likeButtons = document.querySelectorAll(".like-btn");
+  // Function to get CSRF token (if not already included elsewhere)
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
 
-        likeButtons.forEach((likeBtn) => {
-          const contentId = likeBtn.dataset.id;
-          const likeForm = document.getElementById(`like-form-${contentId}`);
+  document.addEventListener("DOMContentLoaded", function () {
+    // ✅ LIKE BUTTON LOGIC
+    const likeButtons = document.querySelectorAll(".like-btn");
 
-          likeBtn.addEventListener("click", function (event) {
-            event.preventDefault();
+    likeButtons.forEach((likeBtn) => {
+      const contentId = likeBtn.dataset.id;
+      const likeForm = document.getElementById(`like-form-${contentId}`);
 
-            fetch(likeForm.action, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCookie("csrftoken"),
-              },
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                const likeIcon = likeBtn.querySelector('img');
-                const likeCount = likeBtn.querySelector('.like-count');
+      likeBtn.addEventListener("click", function (event) {
+        event.preventDefault();
 
-                if (data.action === "liked") {
-                  likeIcon.src = "{% static 'main/img/3643770_favorite_heart_like_likes_love_icon 1 (1).png' %}";
-                  likeCount.textContent = data.total_likes;
-                } else if (data.action === "unliked") {
-                  likeIcon.src = "{% static 'main/img/heart_outline_icon.png' %}"; // Путь к пустому сердечку
-                  likeCount.textContent = data.total_likes;
-                }
-              });
-          });
-        });
+        fetch(likeForm.action, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const likeIcon = likeBtn.querySelector('img');
+            const likeCount = likeBtn.querySelector('.like-count');
 
-        function getCookie(name) {
-          let cookieValue = null;
-          if (document.cookie && document.cookie !== "") {
-            const cookies = document.cookie.split(";");
-            for (let i = 0; i < cookies.length; i++) {
-              const cookie = cookies[i].trim();
-              if (cookie.substring(0, name.length + 1) === name + "=") {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-              }
+            if (data.action === "liked") {
+              likeIcon.src = "{% static 'main/img/3643770_favorite_heart_like_likes_love_icon 1 (1).png' %}";
+              likeCount.textContent = data.total_likes;
+            } else if (data.action === "unliked") {
+              likeIcon.src = "{% static 'main/img/heart_outline_icon.png' %}";
+              likeCount.textContent = data.total_likes;
             }
-          }
-          return cookieValue;
-        }
+          });
       });
-      document.getElementById('subscribeBtn').addEventListener('click', function () {
-        this.classList.toggle('subscribed');
-        this.textContent = this.classList.contains('subscribed') ? 'Subscribed' : 'Subscribe';
-      });
-      
-      function openCommentModal() {
-        document.getElementById("commentModal").style.display = "block";
-    
-        // ESC tugmasi bosilsa
-        document.onkeydown = function (e) {
-          if (e.key === "Escape") {
-            closeCommentModal();
-          }
-        };
-      }
-    
-      function closeCommentModal() {
-        document.getElementById("commentModal").style.display = "none";
-      }
-    
-      // Modal tashqarisiga bosilsa yopish
-      window.onclick = function (event) {
-        const modal = document.getElementById("commentModal");
-        if (event.target === modal) {
-          closeCommentModal();
-        }
-      };
+    });
 
+    // ✅ REDIRECT ON CONTENT CLICK
+    const contentElements = document.querySelectorAll(".redirect-content");
+
+    contentElements.forEach((element) => {
+      element.addEventListener("click", function () {
+        const contentType = this.getAttribute("data-type");
+        const contentId = this.getAttribute("data-id");
+
+        let url = "";
+
+        if (contentType === "image") {
+          url = `/image/${contentId}/`;
+        } else if (contentType === "video") {
+          url = `/video/${contentId}/`;
+        } else if (contentType === "reels") {
+          url = `/reels/${contentId}/`;
+        }
+
+        if (url) {
+          window.location.href = url;
+        }
+      });
+    });
+  });
 
   {% comment %} // Get the like button and form element by ID
   const likeBtn = document.getElementById("like-btn-{{ content.id }}");

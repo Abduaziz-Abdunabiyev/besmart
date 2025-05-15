@@ -14,4 +14,9 @@ urlpatterns = [
     path('reels/', views.reels_list, name='reels_list'),
     path('reels_android/', views.reels_android, name='reels_android'),
 
+    path('reels/<int:pk>/', views.reel_detail, name='reel_detail'),
+    path('video/<int:pk>/', views.video_detail, name='video_detail'),
+    # path('image/<int:pk>/', views.image_detail, name='image_detail'),
+
+
 ]
