@@ -29,7 +29,7 @@
         max-width: 412px;
         margin: 0 auto;
         border: 1px solid rgba(234, 229, 229, 1);
-        padding-top: 30px;
+        /* padding-top: 30px; */
         margin-bottom: 60px;
       }
 
@@ -281,7 +281,7 @@
         margin-bottom: 15px;
       }
 
-      .story-img {
+      /* .story-img {
         width: 83px;
         height: 79px;
         margin-bottom: 16px;
@@ -291,11 +291,11 @@
       .story-img img {
         width: 100%;
         height: 100%;
-        border-radius: 10px;
+        border-radius: 28px;
         object-fit: cover;
         box-shadow: 0px 12px 10px rgba(255, 0, 0, 0.7);
       }
-
+ */
       .tab-menu {
         display: flex;
         justify-content: space-around;
@@ -303,7 +303,7 @@
         background: white;
       }
 
-      .tab-menu button {
+      .tab-menu .tab-button {
         font-family: "Poppins", sans-serif;
         padding: 8px 12px;
         background: none;
@@ -311,13 +311,15 @@
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
-        color: rgba(0, 0, 0, 1)
+        color: rgba(0, 0, 0, 1);
+        text-decoration: none; /* убрать подчёркивание */
       }
 
       .tab-menu .active {
         border-bottom: 5px solid rgba(142, 142, 142, 1);
         border-radius: 4px;
       }
+
 
       .notif-badge {
         background-color: red;
@@ -592,6 +594,72 @@
         width: 24px;
         cursor: pointer;
       }
+      
+      .user-avatar {
+        width: 35px;
+        height: 34px;
+        border-radius: 12px; /* from Figma */
+        object-fit: cover;
+        background-color: #D9D9D9;
+        border: 2px solid #eee;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+      }
+      .user-avatar:hover {
+        transform: scale(1.05);
+        border-color: #7a6ee0;
+      }
+      .subscribe-btn {
+        padding: 10px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        color: white;
+        background-color: #7a6ee0; /* Default purple */
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      }
+      .subscribe-btn:hover {
+        transform: scale(1.05);
+        background-color: #695bd2;
+      }
+      /* Subscribed state */
+      .subscribe-btn.subscribed {
+        background-color: #e53935; /* Red */
+        color: #fff;
+        pointer-events: none; /* Disable button after subscribed */
+      }
+
+      @keyframes shadowPulseMove {
+        0%, 100% {
+          box-shadow: 0px 12px 10px rgba(255, 0, 0, 0.7);
+          transform: translateY(0);
+        }
+        50% {
+          box-shadow: 0px 16px 20px rgba(255, 50, 50, 1);
+          transform: translateY(-3px);
+        }
+      }
+
+      .avatar-img {
+          width: 82px;
+          height: 78px;
+          border-radius: 30px;
+          object-fit: cover;
+          box-shadow: 0px 12px 10px rgba(255, 0, 0, 0.7);
+          animation: shadowPulseMove 3s infinite ease-in-out;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          cursor: pointer;
+      }
+
+        .avatar-img:hover {
+            animation-play-state: paused;
+            box-shadow: 0px 20px 30px rgba(255, 100, 100, 1);
+            transform: scale(1.1) translateY(-5px);
+        }
+
     </style>
     {% load static %}
   </head>
@@ -620,33 +688,52 @@
         </div>
       </header>
 
-      <!-- STORIES -->
-      <section class="stories">
-        <div class="story">
-            <div class="story-img">
-                <img src="{% static 'main/img/Mask group 2.png' %}" alt="Story" />
+        <section class="stories">
+            <!-- Current User Story -->
+            {% if request.user.is_authenticated %}
+            <div class="story">
+                <div class="story-img">
+                    <img src="{{ request.user.profile.avatar.url }}" 
+                        alt="My Avatar" 
+                        width="82" height="78"
+                        style="
+                            border-radius: 30px;
+                            object-fit: cover;
+                            box-shadow: 0px 12px 10px rgba(255, 0, 0, 0.7);
+                            transition: transform 0.3s ease;
+                        "
+                        onmouseover="this.style.transform='scale(1.05)'"
+                        onmouseout="this.style.transform='scale(1)'"
+                    />
+                </div>
+                <p class="profile-user">+</p>
+                <span class="user_name">
+                    {{ request.user.profile.full_name|default:request.user.username }}
+                </span>
             </div>
-          
-          <p class="profile-user">+</p>
-          <span class="user_name">My story</span>
-        </div>
-        {% for i in "1234" %}
-        <div class="story">
-            <div class="story-img">
-                <img src="{% static 'main/img/Mask group 2.png' %}" alt="Story" />
-            </div>
-          <span class="user_name">username.me</span>
-        </div>
-        {% endfor %}
-      </section>
+            {% endif %}
 
+            <!-- Other Users -->
+            {% for user in users %}
+            <div class="story">
+                <div class="story-img">
+                    <a href="/{{ user.username }}">
+                          <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="avatar-img" />
+                    </a>
+                </div>
+                <span class="user_name">
+                    {{ user.profile.full_name|default:user.username }}
+                </span>
+            </div>
+            {% endfor %}
+        </section>
       <!-- TAB MENU -->
-      <nav class="tab-menu">
-        <button class="tab-button">All</button>
-        <button>Reels</button>
-        <button class="active">Video<span class="notif-badge">3</span></button>
-        <button>Photo</button>
-      </nav>
+        <nav class="tab-menu">
+          <a href="{% url 'home' %}" class="tab-button {% if current_tab == 'all' %}active{% endif %}">All</a>
+          <a href="{% url 'reels_list' %}" class="tab-button {% if current_tab == 'reels' %}active{% endif %}">Reels</a>
+          <a href="{% url 'video_detail' %}" class="tab-button {% if current_tab == 'video' %}active{% endif %}">Video</a>
+          <a href="{% url 'reels_list' %}" class="tab-button {% if current_tab == 'photo' %}active{% endif %}">Photo</a>
+        </nav>
 
       <!-- CONTENT BLOK: asosiy kontent bu yerga joylanadi -->
       {% block content %}{% endblock %}
@@ -670,5 +757,17 @@
         </a>
       </footer>
     </div>
+
+    <script>
+      document.querySelectorAll('.tab-menu .tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+          const url = button.getAttribute('data-url');
+          if (url) {
+            window.location.href = url;
+          }
+        });
+      });
+    </script>
+
   </body>
 </html>

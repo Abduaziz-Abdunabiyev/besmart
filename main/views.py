@@ -7,7 +7,14 @@ def homepage(request):
 
 def home(request):
     contents = Content.objects.select_related('user').order_by('-upload_time')
-    return render(request, 'main/home_test.html', {'contents': contents})
+
+    # Получаем пользователей с профилем
+    users = User.objects.select_related('profile').exclude(id=request.user.id)
+
+    return render(request, 'main/home_test.html', {
+        'contents': contents,
+        'users': users
+    })
 
 
 from django.shortcuts import redirect, get_object_or_404
@@ -56,14 +63,15 @@ def like_content(request, content_id):
         'action': action
     })
 
-@login_required
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def comment_content(request, content_id):
-    if request.method == 'POST':
-        content = get_object_or_404(Content, id=content_id)
-        text = request.POST.get('comment')
-        if text:
-            Comment.objects.create(user=request.user, content=content, text=text)
-    return redirect('home')
+    if request.method == "POST":
+        content = Content.objects.get(id=content_id)
+        comment_text = request.POST.get('comment')
+        comment = Comment.objects.create(user=request.user, content=content, text=comment_text)
+        return JsonResponse({'user': request.user.username, 'comment': comment.text})
 
 @login_required
 def subscribe_user(request, user_id):
@@ -77,14 +85,29 @@ def video_list(request):
     return render(request, 'main/videos.html', {'videos': videos})
 
 
-def video_detail(request):
-    contents = Content.objects.select_related('user').order_by('-upload_time')
-    return render(request, 'main/videos_item.html', {'contents': contents})
+# def video_detail(request):
+#     contents = Content.objects.select_related('user').order_by('-upload_time')
+#     return render(request, 'main/videos_item.html', {'contents': contents})
 
-def reels_list(request):
-    return render(request, 'main/reels.html')
+# def reels_list(request):
+#     return render(request, 'main/reels.html')
 
 
 def reels_android(request):
     contents = Content.objects.select_related('user').order_by('-upload_time')
     return render(request, 'main/reels_android.html', {'contents': contents}) 
+
+
+def reels_list(request):
+    # Видео с длительностью до 60 секунд включительно
+    contents = Content.objects.filter(content_type='video', duration__lte=60).order_by('-upload_time')
+    return render(request, 'main/reels.html', {'contents': contents, 'current_tab': 'reels'})
+
+def video_detail(request):
+    # Видео с длительностью более 60 секунд
+    contents = Content.objects.filter(content_type='video', duration__gt=60).order_by('-upload_time')
+    return render(request, 'main/videos_item.html', {'contents': contents, 'current_tab': 'video'})
+
+# def content_photo(request):
+#     contents = Content.objects.filter(content_type='image').order_by('-upload_time')
+#     return render(request, 'main/content_list.html', {'contents': contents, 'current_tab': 'photo'})

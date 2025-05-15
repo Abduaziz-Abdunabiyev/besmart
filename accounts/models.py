@@ -31,6 +31,21 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+# class Content(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     content_type = models.CharField(max_length=10, choices=[('image', 'Image'), ('video', 'Video')])
+#     content_file = models.FileField(upload_to='uploads/')
+#     upload_time = models.DateTimeField(auto_now_add=True)
+#     description = models.TextField(blank=True)
+#     likes = models.PositiveIntegerField(default=0)
+#     tags = models.CharField(max_length=255, blank=True)
+#     duration = models.PositiveIntegerField(null=True, blank=True, help_text="Duration in seconds for videos")
+
+#     def __str__(self):
+#         return f"{self.user.username} - {self.content_type}"
+
+import subprocess
+
 class Content(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content_type = models.CharField(max_length=10, choices=[('image', 'Image'), ('video', 'Video')])
@@ -38,10 +53,33 @@ class Content(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     description = models.TextField(blank=True)
     likes = models.PositiveIntegerField(default=0)
-    tags = models.CharField(max_length=255, blank=True)  # New field for auto-generated tags
+    tags = models.CharField(max_length=255, blank=True)
+    duration = models.PositiveIntegerField(null=True, blank=True)
 
-    def __str__(self):
-        return f"{self.user.username} - {self.content_type}"
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Сначала сохраняем файл, чтобы был доступ к пути
+
+        if self.content_type == 'video' and self.content_file:
+            try:
+                # Путь к файлу
+                filepath = self.content_file.path
+
+                # Команда ffprobe (часть ffmpeg) для получения длительности видео в секундах
+                result = subprocess.run(
+                    ['ffprobe', '-v', 'error', '-show_entries', 'format=duration', 
+                     '-of', 'default=noprint_wrappers=1:nokey=1', filepath],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT
+                )
+                duration_seconds = float(result.stdout)
+                self.duration = int(duration_seconds)
+
+                # Обновляем запись в базе
+                Content.objects.filter(pk=self.pk).update(duration=self.duration)
+
+            except Exception as e:
+                print(f"Ошибка при получении длительности видео: {e}")
+
 
     
 class Like(models.Model):
